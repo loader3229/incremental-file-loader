@@ -44,6 +44,17 @@ height:15px;
 background-color:#cccccc;
 }
 
+.file .progress_bar1{
+position:absolute;
+width:0px;
+height:15px;
+background-color:#888888;
+}
+
+.file .progress_bar1.active{
+background-color:#0000ff;
+}
+
 #idle_file_loader_exe{
 top:20px;
 left:20px;

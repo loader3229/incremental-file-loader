@@ -5,10 +5,13 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/window.js"></script>
+<script src="js/break_eternity.js"></script>
+<script src="js/NumberFormating.js"></script>
+<script src="js/game.js"></script>
 </head>
 <body>
 <div id="idle_file_loader_exe" class="file" onclick="show_file_loader();">
-<div class="progress_bar"></div>
+<div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
 <img src="images/exe.png">
 <div class="text">idle_file_loader.exe</div>
 </div>
@@ -17,6 +20,14 @@
 <img src="images/exe.png">
 <div class="text">about.exe</div>
 </div>
+
+
+<div id="main" class="window">
+<div class="close" onclick="hide_window('main');">X</div>
+<div class="inner">
+</div>
+</div>
+
 
 <div id="about" class="window">
 <div class="close" onclick="hide_window('about');">X</div>

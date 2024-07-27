@@ -62,7 +62,11 @@ width:calc(100% - 60px);
 height:calc(100% - 60px);
 background-color:#000000;
 z-index:2;
+display:none;
+}
 
+.window.shown{
+display:block;
 }
 
 .window .close{

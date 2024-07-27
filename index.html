@@ -2,14 +2,18 @@
 <head>
 <title>Idle File Loader</title>
 <link rel="stylesheet" href="style.css">
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/window.js"></script>
 </head>
 <body>
-<div id="idle_file_loader_exe" class="file">
+<div id="idle_file_loader_exe" class="file" onclick="show_file_loader();">
 <div class="progress_bar"></div>
 <img src="images/exe.png">
 <div class="text">idle_file_loader.exe</div>
 </div>
-<div id="about_exe" class="file" onclick="show_window('about')">
+
+<div id="about_exe" class="file" onclick="show_window('about');">
 <img src="images/exe.png">
 <div class="text">about.exe</div>
 </div>

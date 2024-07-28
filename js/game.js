@@ -1,13 +1,3 @@
-var player;
-function getInitPlayer(){
-	return {
-		loaded_files:[],
-		data:new Decimal(0),
-		upgrades:[],
-		loading:-1,
-		playTime:0,	
-	};
-}
 
 function getLoaderSpeed(){
 	let a=new Decimal(1);
@@ -66,17 +56,3 @@ function update(){
 }
 
 setInterval(update,20);
-
-
-
-
-
-
-
-
-
-
-
-
-
-player=getInitPlayer();

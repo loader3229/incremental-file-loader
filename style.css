@@ -83,14 +83,24 @@ top:20px;
 left:20px;
 }
 
-#settings_exe{
-top:20px;
+#achievements_exe{
+top:150px;
+left:20px;
+}
+
+#stats_exe{
+top:150px;
 left:105px;
 }
 
-#about_exe{
-top:20px;
+#settings_exe{
+top:150px;
 left:190px;
+}
+
+#about_exe{
+top:150px;
+left:275px;
 }
 
 .window{

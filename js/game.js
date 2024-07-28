@@ -22,6 +22,10 @@ function getLoadedFiles(a){
 	return player.loaded_files[a];
 }
 
+function dataGain(){
+	return getLoadedFiles(1).floor().div(10);
+}
+
 var LENGTH=[5,5];
 var tick=Date.now();
 var devSpeed=1;
@@ -33,6 +37,9 @@ function update(){
 	
 	player.playTime+=diff;
 	
+	var gain=dataGain().mul(diff);
+	player.data=player.data.add(gain);
+	player.totalData=player.totalData.add(gain);
 	if(player.loading>=0){
 		player.loaded_files[player.loading]=getLoadedFiles(player.loading).add((getLoaderSpeed()).mul(diff).div(LENGTH[player.loading]));
 	}
@@ -53,6 +60,9 @@ function update(){
 	
 	$("#p0a").css("display",player.loaded_files[0].gte(1)?"none":"");
 	
+	$("#total_time").html(formatTime(player.playTime));
+	$("#total_data").html(formatData(player.totalData));
+	$("#data1").html(formatData(player.data));
 }
 
 setInterval(update,20);

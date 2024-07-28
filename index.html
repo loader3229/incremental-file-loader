@@ -8,6 +8,7 @@
 <script src="js/break_eternity.js"></script>
 <script src="js/NumberFormating.js"></script>
 <script src="js/game.js"></script>
+<meta name="viewport" content="width=640, user-scalable=no">
 </head>
 <body>
 <div id="idle_file_loader_exe" class="file" onclick="show_file_loader();">
@@ -25,6 +26,14 @@
 <div id="main" class="window">
 <div class="close" onclick="hide_window('main');">X</div>
 <div class="inner">
+<h2>You have <span id="data">0b</span> data.</h2>
+<hr>
+<div id="data_generator_exe" class="file" onclick="loadFile(1);">
+<div id="p1a" class="progress_bar"><div id="p1" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">data_generator.exe</div>
+<div id="cnt1" class="cnt">0</div>
+</div>
 </div>
 </div>
 

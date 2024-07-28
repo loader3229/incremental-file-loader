@@ -35,23 +35,46 @@ z-index:1;
 
 }
 
+.file .cnt{
+position:absolute;
+top:55px;
+right:0px;
+font-size:12px;
+height:20px;
+word-break:break-all;
+z-index:1;
+background-color:rgba(0,0,0,0.15);
+}
+
 .file .progress_bar{
 position:absolute;
 top:105px;
 left:0px;
 width:75px;
 height:15px;
-background-color:#cccccc;
+background-color:#999999;
+}
+
+.file .progress_bar.active:before{
+position:absolute;
+top:0px;
+left:0px;
+width:75px;
+height:15px;
+font-size:9px;
+text-align:center;
+content: "Loading...";
+z-index:1;
 }
 
 .file .progress_bar1{
 position:absolute;
 width:0px;
 height:15px;
-background-color:#888888;
+background-color:#333333;
 }
 
-.file .progress_bar1.active{
+.file .progress_bar.active .progress_bar1{
 background-color:#0000ff;
 }
 

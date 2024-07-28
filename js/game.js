@@ -5,7 +5,7 @@ function getInitPlayer(){
 		data:new Decimal(0),
 		upgrades:[],
 		loading:-1,
-		playTime:0,
+		playTime:0,	
 	};
 }
 
@@ -32,7 +32,7 @@ function getLoadedFiles(a){
 	return player.loaded_files[a];
 }
 
-var LENGTH=[5];
+var LENGTH=[5,5];
 var tick=Date.now();
 var devSpeed=1;
 function update(){
@@ -47,10 +47,13 @@ function update(){
 		player.loaded_files[player.loading]=getLoadedFiles(player.loading).add((getLoaderSpeed()).mul(diff).div(LENGTH[player.loading]));
 	}
 	
-	for(var i=0;i<=0;i++){
+	for(var i=0;i<=1;i++){
 		$("#p"+i).width(getLoadedFiles(i).sub(Decimal.floor(getLoadedFiles(i))).mul(100).toNumber()+"%");
-		if(player.loading==i)$("#p"+i).addClass("active");
-		else $("#p"+i).removeClass("active");
+		if(player.loading==i)$("#p"+i+"a").addClass("active");
+		else $("#p"+i+"a").removeClass("active");
+		if(i>=1){
+			$("#cnt"+i).html(formatWhole(getLoadedFiles(i).floor()));
+		}
 	}
 	
 	if(player.loading==0 && player.loaded_files[0].gte(1)){

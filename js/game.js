@@ -26,7 +26,7 @@ function dataGain(){
 	return getLoadedFiles(1).floor().div(10);
 }
 
-var LENGTH=[5,5];
+var LENGTH=[5,5,5];
 var tick=Date.now();
 var devSpeed=1;
 function update(){
@@ -63,6 +63,16 @@ function update(){
 	$("#total_time").html(formatTime(player.playTime));
 	$("#total_data").html(formatData(player.totalData));
 	$("#data1").html(formatData(player.data));
+	$("#data2").html(formatData(player.data));
+	
+	checkAchievements();
+}
+
+
+function getUpgrade(a){
+	if(player.upgrades[a])return player.upgrades[a];
+	player.upgrades[a]=new Decimal(0);
+	return player.upgrades[a];
 }
 
 setInterval(update,20);

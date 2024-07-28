@@ -15,7 +15,7 @@
 <meta name="viewport" content="width=640, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader 0.0.2 by loader3229 | <span id="data2">0b</span> Data</span>
+<span id="gametitle">Incremental File Loader 0.0.2 by loader3229 | <span id="data2">0b</span> 数据</span>
 <span id="ach" style="opacity:0;"></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -51,7 +51,7 @@
 <div id="main" class="window">
 <div class="close" onclick="hide_window('main');">X</div>
 <div class="inner">
-<h2>You have <span id="data1">0b</span> data.</h2>
+<h2>你拥有 <span id="data1">0b</span> 数据。</h2>
 <hr>
 <div id="data_generator_exe" class="file" onclick="loadFile(1);">
 <div id="p1a" class="progress_bar"><div id="p1" class="progress_bar1"></div></div>
@@ -68,36 +68,34 @@
 <div class="inner">
 <h1>Incremental File Loader</h1>
 <hr>
-An incremental game made by loader3229
+一个由 loader3229制作的增量游戏
 <br>
-File icons from <a href="https://github.com/redbooth/free-file-icons">https://github.com/redbooth/free-file-icons</a><br>
-Some of codes from <a href="https://github.com/Acamaeda/The-Modding-Tree">The Modding Tree</a><br>
-Achievements inspired by <a href="https://ivark.github.io">Antimatter Dimensions</a>
+文件图标来自于<a href="https://github.com/redbooth/free-file-icons">https://github.com/redbooth/free-file-icons</a><br>
+有些代码来自于<a href="https://github.com/Acamaeda/The-Modding-Tree">模组树（The Modding Tree）</a><br>
+成就灵感来自<a href="https://ivark.github.io">反物质维度（Antimatter Dimensions）</a>
 <hr>
-<a href="/">loader3229's New Homepage</a><br>
-<a href="https://discord.gg/jztUReQ2vT">loader3229's Discord Server</a><br>
-<a href="https://patreon.com/user?u=56328626">Patreon Donation</a><br>
-<a href="https://ko-fi.com/loader3229">Ko-Fi Donation</a><br>
-<a href="https://afdian.com/a/loader3229">Afdian Donation for Chinese players</a><br>
+<a href="/">loader3229的新主页</a><br>
+<a href="https://space.bilibili.com/111116729">loader3229的B站账号</a><br>
+<a href="https://afdian.com/a/loader3229">用爱发电（捐赠）</a><br>
 </div>
 </div>
 
 <div id="stats" class="window">
 <div class="close" onclick="hide_window('stats');">X</div>
 <div class="inner">
-You produced a total of <span id="total_data">0b</span> data.<br>
-You played this game for <span id="total_time"></span>.
+你一共生产了<span id="total_data">0b</span> 数据。<br>
+你在这个游戏里面已经玩了 <span id="total_time"></span>。
 </div>
 </div>
 
 <div id="settings" class="window">
 <div class="close" onclick="hide_window('settings');">X</div>
 <div class="inner">
-<button onclick=savegame();>Save</button>
-<button onclick=resetgame();>Reset</button>
-<button onclick=importgame();>Import</button>
-<button onclick=exportgame();>Export</button>
-<textarea id=export1 placeholder="Your Exported Save"></textarea>
+<button onclick=savegame();>存档</button>
+<button onclick=resetgame();>重置</button>
+<button onclick=importgame();>导入</button>
+<button onclick=exportgame();>导出</button>
+<textarea id=export1 placeholder="导出的存档在这哦~"></textarea>
 </div>
 </div>
 

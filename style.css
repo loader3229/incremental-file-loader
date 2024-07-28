@@ -12,6 +12,7 @@ padding:0;
 position:absolute;
 width:75px;
 height:120px;
+display:block;
 }
 
 .file img{
@@ -32,7 +33,11 @@ height:45px;
 word-break:break-all;
 text-align:center;
 z-index:1;
-background-color:rgba(255,255,255,0.15);
+color:#ffffff;
+}
+
+.window .file .text{
+color:#000000;
 }
 
 .file .cnt{
@@ -65,6 +70,8 @@ font-size:9px;
 text-align:center;
 content: "Loading...";
 z-index:1;
+color:#ffffff;
+
 }
 
 .file .progress_bar1{
@@ -101,6 +108,11 @@ left:190px;
 #about_exe{
 top:150px;
 left:275px;
+}
+
+#changelog_html{
+top:150px;
+left:360px;
 }
 
 .window{

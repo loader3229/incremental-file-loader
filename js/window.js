@@ -5,6 +5,7 @@ function show_window(a){
 	$("#"+a).addClass('shown');
 	
 	document.getElementById("export1").value="";
+	current_window=a;
 }
 
 function hide_window(a){

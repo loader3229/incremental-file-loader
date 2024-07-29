@@ -1,8 +1,9 @@
-﻿<html lang="en">
+﻿<html lang="zh-cn">
 <head>
 <meta charset=utf-8>
 <title>Incremental File Loader 0.0.2 by loader3229</title>
 <link rel="stylesheet" href="style.css">
+<script>zhMode=true;</script>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/window.js"></script>
@@ -22,6 +23,14 @@
 <img src="images/exe.png">
 <div class="text">file_loader.exe</div>
 </div>
+
+<div id="upgrades_exe" class="file" onclick="show_upgrades();">
+<div id="p2a" class="progress_bar"><div id="p2" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">upgrades.exe</div>
+</div>
+
+
 
 <div id="about_exe" class="file" onclick="show_window('about');">
 <img src="images/exe.png">
@@ -59,6 +68,33 @@
 <div class="text">data_generator.exe</div>
 <div id="cnt1" class="cnt">0</div>
 </div>
+
+
+<div id="adder_exe" class="file" onclick="loadFile(3);">
+<div id="p3a" class="progress_bar"><div id="p3" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">adder.exe</div>
+<div id="cnt3" class="cnt">0</div>
+</div>
+
+<div id="multiplier_exe" class="file" onclick="loadFile(4);">
+<div id="p4a" class="progress_bar"><div id="p4" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">multiplier.exe</div>
+<div id="cnt4" class="cnt">0</div>
+</div>
+
+</div>
+</div>
+
+
+<div id="upgrades" class="window">
+<div class="close" onclick="hide_window('upgrades');">X</div>
+<div class="inner">
+<h2>你拥有 <span id="data3">0b</span> 数据。</h2>
+<hr>
+文件加载器 等级<span id="upg0">upgrade</span>，速度：<span id="speed"></span>，升级需要<span id="upg0c"></span>数据<br>
+<a href="javascript:upgrade(0);">升级</a>
 </div>
 </div>
 

@@ -30,7 +30,7 @@ function loadgame(){
 	if(player1.totalData)player.totalData=new Decimal(player1.totalData);
 	for(var i in player1.loaded_files)player.loaded_files[i]=new Decimal(player1.loaded_files[i]);
 	for(var i in player1.upgrades)player.upgrades[i]=new Decimal(player1.upgrades[i]);
-	for(var i in player1.achievements)player.achievements[i]=new Decimal(player1.achievements[i]);
+	for(var i in player1.achievements)player.achievements[i]=player1.achievements[i];
 	player.loading=player1.loading;
 	player.playTime=player1.playTime;
 }

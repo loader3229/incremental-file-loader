@@ -90,6 +90,20 @@ function formatData(decimal) {
 	return format(decimal.div(2**80))+"YB";
 }
 
+function formatData2(decimal) {
+    decimal = new Decimal(decimal)
+	if (decimal.lt(1))return format(decimal.mul(8))+"b";
+	if (decimal.lt(1024))return format(decimal)+"B";
+	if (decimal.lt(2**20))return format(decimal.div(1024))+"KB";
+	if (decimal.lt(2**30))return format(decimal.div(2**20))+"MB";
+	if (decimal.lt(2**40))return format(decimal.div(2**30))+"GB";
+	if (decimal.lt(2**50))return format(decimal.div(2**40))+"TB";
+	if (decimal.lt(2**60))return format(decimal.div(2**50))+"PB";
+	if (decimal.lt(2**70))return format(decimal.div(2**60))+"EB";
+	if (decimal.lt(2**80))return format(decimal.div(2**70))+"ZB";
+	return format(decimal.div(2**80))+"YB";
+}
+
 function formatTime(s) {
     if (s < 60) return format(s) + "s"
     else if (s < 3600) return formatWhole(Math.floor(s / 60)) + "m " + format(s % 60) + "s"

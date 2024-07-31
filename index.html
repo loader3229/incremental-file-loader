@@ -1,7 +1,7 @@
 ﻿<html lang="en">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader 0.0.2 by loader3229</title>
+<title>Incremental File Loader 0.0.3 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=false;</script>
 <script src="js/jquery.min.js"></script>
@@ -13,10 +13,10 @@
 <script src="js/achievements.js"></script>
 <script src="js/save.js"></script>
 <script src="/sha512.js"></script>
-<meta name="viewport" content="width=640, user-scalable=no">
+<meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader 0.0.2 by loader3229 | <span id="data2">0b</span> Data</span>
+<span id="gametitle">Incremental File Loader 0.0.3 by loader3229 | <span id="data2">0b</span> Data</span>
 <span id="ach" style="opacity:0;"></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -28,6 +28,12 @@
 <div id="p2a" class="progress_bar"><div id="p2" class="progress_bar1"></div></div>
 <img src="images/exe.png">
 <div class="text">upgrades.exe</div>
+</div>
+
+<div id="format_exe" class="file" onclick="show_format();">
+<div id="p5a" class="progress_bar"><div id="p5" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">format.exe</div>
 </div>
 
 
@@ -62,12 +68,15 @@
 <div class="inner">
 <h2>You have <span id="data1">0b</span> data.</h2>
 <hr>
+<div style="height:150px;"></div>
+
 <div id="data_generator_exe" class="file" onclick="loadFile(1);">
 <div id="p1a" class="progress_bar"><div id="p1" class="progress_bar1"></div></div>
 <img src="images/exe.png">
 <div class="text">data_generator.exe</div>
 <div id="cnt1" class="cnt">0</div>
 </div>
+
 
 <div id="adder_exe" class="file" onclick="loadFile(3);">
 <div id="p3a" class="progress_bar"><div id="p3" class="progress_bar1"></div></div>
@@ -83,6 +92,10 @@
 <div id="cnt4" class="cnt">0</div>
 </div>
 
+<hr>
+<span id="data_generator_effect"></span>
+<span id="adder_effect"></span>
+<span id="multiplier_effect"></span>
 </div>
 </div>
 
@@ -94,6 +107,16 @@
 <hr>
 File Loader Level <span id="upg0">upgrade</span>, Speed: <span id="speed"></span>, Cost: <span id="upg0c"></span> Data<br>
 <a href="javascript:upgrade(0);">Upgrade</a>
+</div>
+</div>
+
+<div id="format" class="window">
+<div class="close" onclick="hide_window('format');">X</div>
+<div class="inner">
+<h2>You have <span id="fp1">0</span> format points.</h2>
+<hr>
+Format need 1MB data and will reset all files in file_loader.exe and data for format points.<br>
+<a href="javascript:format_reset();" id="format_reset_link">Format</a>
 </div>
 </div>
 

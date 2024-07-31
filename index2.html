@@ -1,7 +1,7 @@
 ﻿<html lang="zh-cn">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader 0.0.2 by loader3229</title>
+<title>Incremental File Loader 0.0.3 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=true;</script>
 <script src="js/jquery.min.js"></script>
@@ -13,10 +13,10 @@
 <script src="js/achievements.js"></script>
 <script src="js/save.js"></script>
 <script src="/sha512.js"></script>
-<meta name="viewport" content="width=640, user-scalable=no">
+<meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader 0.0.2 by loader3229 | <span id="data2">0b</span> 数据</span>
+<span id="gametitle">Incremental File Loader 0.0.3 by loader3229 | <span id="data2">0b</span> 数据</span>
 <span id="ach" style="opacity:0;"></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -28,6 +28,12 @@
 <div id="p2a" class="progress_bar"><div id="p2" class="progress_bar1"></div></div>
 <img src="images/exe.png">
 <div class="text">upgrades.exe</div>
+</div>
+
+<div id="format_exe" class="file" onclick="show_format();">
+<div id="p5a" class="progress_bar"><div id="p5" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">format.exe</div>
 </div>
 
 
@@ -62,6 +68,8 @@
 <div class="inner">
 <h2>你拥有 <span id="data1">0b</span> 数据。</h2>
 <hr>
+<div style="height:150px;"></div>
+
 <div id="data_generator_exe" class="file" onclick="loadFile(1);">
 <div id="p1a" class="progress_bar"><div id="p1" class="progress_bar1"></div></div>
 <img src="images/exe.png">
@@ -84,6 +92,10 @@
 <div id="cnt4" class="cnt">0</div>
 </div>
 
+<hr>
+<span id="data_generator_effect"></span>
+<span id="adder_effect"></span>
+<span id="multiplier_effect"></span>
 </div>
 </div>
 
@@ -95,6 +107,16 @@
 <hr>
 文件加载器 等级<span id="upg0">upgrade</span>，速度：<span id="speed"></span>，升级需要<span id="upg0c"></span>数据<br>
 <a href="javascript:upgrade(0);">升级</a>
+</div>
+</div>
+
+<div id="format" class="window">
+<div class="close" onclick="hide_window('format');">X</div>
+<div class="inner">
+<h2>你拥有 <span id="fp1">0</span>格式化点数。</h2>
+<hr>
+格式化需要1MB数据，并且会重置file_loader.exe里面所有的文件和数据，但是你可以得到格式化点数。<br>
+<a href="javascript:format_reset();" id="format_reset_link">格式化</a>
 </div>
 </div>
 

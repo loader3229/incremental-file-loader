@@ -3,9 +3,15 @@ function getInitPlayer(){
 		loaded_files:[],
 		data:new Decimal(0),
 		totalData:new Decimal(0),
+		formatPoints:new Decimal(0),
+		totalFormatPoints:new Decimal(0),
 		upgrades:[],
+		formatUpgrades:[],
 		loading:-1,
 		playTime:0,
+		formatTime:0,
+		formatCount:0,
+		bestFormatTime:1e308,
 		achievements:[],
 	};
 }
@@ -28,11 +34,17 @@ function loadgame(){
 	
 	if(player1.data)player.data=new Decimal(player1.data);
 	if(player1.totalData)player.totalData=new Decimal(player1.totalData);
+	if(player1.formatPoints)player.formatPoints=new Decimal(player1.formatPoints);
+	if(player1.totalFormatPoints)player.totalFormatPoints=new Decimal(player1.totalFormatPoints);
 	for(var i in player1.loaded_files)player.loaded_files[i]=new Decimal(player1.loaded_files[i]);
 	for(var i in player1.upgrades)player.upgrades[i]=new Decimal(player1.upgrades[i]);
+	for(var i in player1.formatUpgrades)player.formatUpgrades[i]=new Decimal(player1.formatUpgrades[i]);
 	for(var i in player1.achievements)player.achievements[i]=player1.achievements[i];
-	player.loading=player1.loading;
-	player.playTime=player1.playTime;
+	player.loading=player1.loading || -1;
+	player.playTime=player1.playTime || 0;
+	player.formatTime=player1.formatTime || player1.playTime;
+	player.formatCount=player1.formatCount || 0;
+	player.bestFormatTime=player1.bestFormatTime || 1e308;
 }
 
 function resetgame(){

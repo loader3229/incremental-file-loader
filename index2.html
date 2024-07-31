@@ -1,7 +1,7 @@
 ﻿<html lang="zh-cn">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader 0.0.3 by loader3229</title>
+<title>Incremental File Loader 0.1.0 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=true;</script>
 <script src="js/jquery.min.js"></script>
@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader 0.0.3 by loader3229 | <span id="data2">0b</span> 数据</span>
+<span id="gametitle">Incremental File Loader 0.1.0 by loader3229 | <span id="data2">0b</span> 数据</span>
 <span id="ach" style="opacity:0;"></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -106,7 +106,9 @@
 <h2>你拥有 <span id="data3">0b</span> 数据。</h2>
 <hr>
 文件加载器 等级<span id="upg0">upgrade</span>，速度：<span id="speed"></span>，升级需要<span id="upg0c"></span>数据<br>
-<a href="javascript:upgrade(0);">升级</a>
+<a href="javascript:upgrade(0);">升级</a> <a id="format_upg0" href="javascript:formatUpgrade(0);">升级</a> <hr>
+<div id="upgrade1" style="display:none;">数据加成 等级<span id="upg1">upgrade</span>，加成：<span id="upg1e"></span>x，升级需要<span id="upg1c"></span>数据<br>
+<a href="javascript:upgrade(1);">升级</a> <a id="format_upg1" href="javascript:formatUpgrade(1);">升级</a> <hr></div>
 </div>
 </div>
 
@@ -116,7 +118,7 @@
 <h2>你拥有 <span id="fp1">0</span>格式化点数。</h2>
 <hr>
 格式化需要1MB数据，并且会重置file_loader.exe里面所有的文件和数据，但是你可以得到格式化点数。<br>
-<a href="javascript:format_reset();" id="format_reset_link">格式化</a>
+<a href="javascript:format_reset();" id="format_reset_link">格式化</a><hr>
 </div>
 </div>
 
@@ -135,6 +137,8 @@
 <a href="/">loader3229的新主页</a><br>
 <a href="https://space.bilibili.com/111116729">loader3229的B站账号</a><br>
 <a href="https://afdian.com/a/loader3229">用爱发电（捐赠）</a><br>
+
+
 </div>
 </div>
 
@@ -142,7 +146,13 @@
 <div class="close" onclick="hide_window('stats');">X</div>
 <div class="inner">
 你一共生产了<span id="total_data">0b</span> 数据。<br>
-你在这个游戏里面已经玩了 <span id="total_time"></span>。
+你在这个游戏里面已经玩了 <span id="total_time"></span>。<hr>
+<div id="format_stat">
+你一共生产了<span id="format_stat1">0b</span>格式化点数。<br>
+你格式化了<span id="format_stat2"></span>次。<br>
+你最快的格式化用了<span id="format_stat3"></span>。<br>
+你本次格式化用了<span id="format_stat4"></span>。<hr>
+</div>
 </div>
 </div>
 

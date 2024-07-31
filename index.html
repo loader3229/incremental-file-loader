@@ -1,7 +1,7 @@
 ﻿<html lang="en">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader 0.0.3 by loader3229</title>
+<title>Incremental File Loader 0.1.0 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=false;</script>
 <script src="js/jquery.min.js"></script>
@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader 0.0.3 by loader3229 | <span id="data2">0b</span> Data</span>
+<span id="gametitle">Incremental File Loader 0.1.0 by loader3229 | <span id="data2">0b</span> Data</span>
 <span id="ach" style="opacity:0;"></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -106,7 +106,9 @@
 <h2>You have <span id="data3">0b</span> data.</h2>
 <hr>
 File Loader Level <span id="upg0">upgrade</span>, Speed: <span id="speed"></span>, Cost: <span id="upg0c"></span> Data<br>
-<a href="javascript:upgrade(0);">Upgrade</a>
+<a href="javascript:upgrade(0);">Upgrade</a><hr>
+<div id="upgrade1" style="display:none;">Data Multiplier Level <span id="upg1">upgrade</span>, Effect: <span id="upg1e"></span>x, Cost: <span id="upg1c"></span> Data<br>
+<a href="javascript:upgrade(1);">Upgrade</a><hr></div>
 </div>
 </div>
 
@@ -116,7 +118,7 @@ File Loader Level <span id="upg0">upgrade</span>, Speed: <span id="speed"></span
 <h2>You have <span id="fp1">0</span> format points.</h2>
 <hr>
 Format need 1MB data and will reset all files in file_loader.exe and data for format points.<br>
-<a href="javascript:format_reset();" id="format_reset_link">Format</a>
+<a href="javascript:format_reset();" id="format_reset_link">Format</a><hr>
 </div>
 </div>
 
@@ -144,7 +146,13 @@ Achievements inspired by <a href="https://ivark.github.io">Antimatter Dimensions
 <div class="close" onclick="hide_window('stats');">X</div>
 <div class="inner">
 You produced a total of <span id="total_data">0b</span> data.<br>
-You played this game for <span id="total_time"></span>.
+You played this game for <span id="total_time"></span>.<hr>
+<div id="format_stat">
+You produced a total of <span id="format_stat1">0b</span> format points.<br>
+You formatted <span id="format_stat2"></span> times.<br>
+Your best format reset in <span id="format_stat3"></span>.<br>
+You spent <span id="format_stat4"></span> in current format reset.<hr>
+</div>
 </div>
 </div>
 

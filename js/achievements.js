@@ -2,7 +2,8 @@ var ACHIEVEMENTS=[
 	["You gotta start somewhere","Start producing data.","Unlock upgrades.exe","从零开始","开始生产数据。","解锁upgrades.exe"],
 	["100 bytes is a lot?","Produce a total of 100B data.","Unlock adder.exe in file_loader.exe","100个字节就算多了？","生产100字节数据。","在file_loader.exe里面解锁adder.exe"],
 	["10x Speed!","Reach Level 10 File Loader.","Unlock multiplier.exe in file_loader.exe","10倍速度！","将文件加载器升级到10级","在file_loader.exe里面解锁multiplier.exe"],
-	["Millionaire","Produce a total of 1MB data.","Unlock format.exe","百万富翁","生产1MB数据。","解锁format.exe"]
+	["Millionaire","Produce a total of 1MB data.","Unlock format.exe","百万富翁","生产1MB数据。","解锁format.exe"],
+	["All that data are gone!","Perform a format reset.","Unlock a new upgrade in upgrades.exe","所有的数据都丢失了！","进行一次格式化。","在upgrades.exe里面解锁新的升级"]
 ]
 
 function init_achievements(){
@@ -65,6 +66,9 @@ function checkAchievements(){
 	}
 	if(player.totalData.gte(2**20)){
 		getAchievement(3);
+	}
+	if(player.formatCount>=1){
+		getAchievement(4);
 	}
 	
 	$('#achcount').html(player.achievements.length);

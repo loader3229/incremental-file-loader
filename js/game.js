@@ -65,7 +65,7 @@ function getUpgradeEffect(a){
 
 function getFormatUpgradeCost(a){
 	if(a==0)return Decimal.pow(2,getFormatUpgradeLevel(a));
-	if(a==1)return Decimal.pow(2,getFormatUpgradeLevel(a));
+	if(a==1)return Decimal.pow(3,getFormatUpgradeLevel(a));
 }
 
 function upgrade(a){
@@ -94,6 +94,7 @@ function format_reset(){
 		player.loaded_files[1]=new Decimal(0);
 		player.loaded_files[3]=new Decimal(0);
 		player.loaded_files[4]=new Decimal(0);
+		player.loaded_files[6]=new Decimal(0);
 	}
 }
 
@@ -109,7 +110,17 @@ function formatPointGain(){
 	return a;
 }
 
-var LENGTH=[5,5,5,50,100,500];
+function bitcoinGain(){
+	let a=player.data.add(1).max(1).log10().mul(getLoadedFiles(6).floor().add(1).max(1).log10().pow(2)).div(100);
+	return a;
+}
+
+function realBitcoinGain(){
+	let a=player.bitcoin.add(2).div(2).pow(2).add(bitcoinGain()).sqrt().mul(2).sub(2).sub(player.bitcoin);
+	return a;
+}
+
+var LENGTH=[5,5,5,50,100,500,1000];
 var tick=Date.now();
 var devSpeed=1;
 function update(){
@@ -124,25 +135,32 @@ function update(){
 	var gain=dataGain().mul(diff);
 	player.data=player.data.add(gain);
 	player.totalData=player.totalData.add(gain);
+	
+	gain=bitcoinGain().mul(diff);
+	gain=player.bitcoin.add(2).div(2).pow(2).add(gain).sqrt().mul(2).sub(2).sub(player.bitcoin);
+	
+	player.bitcoin=player.bitcoin.add(gain);
+	player.totalBitcoin=player.totalBitcoin.add(gain);
+	
 	if(player.loading>=0){
 		player.loaded_files[player.loading]=getLoadedFiles(player.loading).add((getLoaderSpeed()).mul(diff).div(LENGTH[player.loading]));
 	}
 	
-	for(var i=0;i<=5;i++){
+	for(var i=0;i<=6;i++){
 		$("#p"+i).width(getLoadedFiles(i).sub(Decimal.floor(getLoadedFiles(i))).mul(100).toNumber()+"%");
 		if(player.loading==i)$("#p"+i+"a").addClass("active");
 		else $("#p"+i+"a").removeClass("active");
-		if(i==1||i==3||i==4){
+		if(i==1||i==3||i==4||i==6){
 			$("#cnt"+i).html(formatWhole(getLoadedFiles(i).floor()));
 		}
 	}
 	
 	for(var i=0;i<=1;i++){
-		$("#upg"+i).html(formatWhole(getUpgradeLevel(i).floor().add(i==0?1:0))+"+"+formatWhole(getFormatUpgradeLevel(i).floor()));
-		$("#upg"+i+"c").html(formatData(getUpgradeCost(i)));
+		$("#upg"+i).html(formatWhole(getUpgradeLevel(i).floor().add(i==0?1:0).add(getFormatUpgradeLevel(i).floor())));
+		$("#upg"+i+"c").html((zhMode?"升级（":"Upgrade (")+formatData(getUpgradeCost(i))+(zhMode?"数据）":" Data)"));
 		if(i!=0)$("#upg"+i+"e").html(format(getUpgradeEffect(i)));
 		$("#format_upg"+i).css("display",hasAchievement(4)?"":"none");
-		$("#format_upg"+i).html((zhMode?"用":"Use ")+formatWhole(getFormatUpgradeCost(i))+(zhMode?"格式化点数进行升级":" Format Points to upgrade"));
+		$("#format_upg"+i).html((zhMode?"升级（":"Upgrade (")+formatWhole(getFormatUpgradeCost(i))+(zhMode?"格式化点数）":" Format Points)"));
 	}
 	
 	$("#speed").html(format(getLoaderSpeed()));
@@ -162,10 +180,16 @@ function update(){
 	$("#multiplier_exe").css("display",hasAchievement(2)?"":"none");
 	$("#format_exe").css("display",hasAchievement(3)?"":"none");
 	$("#upgrade1").css("display",hasAchievement(4)?"":"none");
+	$("#miner_exe").css("display",hasAchievement(5)?"":"none");
+	
+	$("#adder_effect").css("display",hasAchievement(1)?"":"none");
+	$("#multiplier_effect").css("display",hasAchievement(2)?"":"none");
+	$("#miner_effect").css("display",hasAchievement(5)?"":"none");
 	
 	$("#data_generator_effect").html("data_generator.exe: +"+formatData2(dataGain())+(zhMode?" 数据/秒":" Data/s")+"<br>");
 	$("#adder_effect").html("adder.exe: +"+formatData2(getLoadedFiles(3).floor().sqrt().mul(1).div(10))+(zhMode?" data_generator.exe的基本数据/秒":" Base Data/s to data_generator.exe")+"<br>");
 	$("#multiplier_effect").html("multiplier.exe: *"+format(getLoadedFiles(4).floor().sqrt().mul(1).add(1))+(zhMode?" data_generator.exe的速度":" to data_generator.exe")+"<br>");
+	$("#miner_effect").html("miner.exe: +"+format(realBitcoinGain(),4)+(zhMode?" 加密货币/秒（基础：":" Bitcoin/sec (Base:")+format(bitcoinGain(),4)+(zhMode?" 加密货币/秒，基于数据）":" Bitcoin/sec based on data)")+"<br>");
 	$("#format_reset_link").html((zhMode?"格式化以得到":"Format for ")+formatWhole(formatPointGain())+(zhMode?"格式化点数":" Format Points")+"<br>");
 	
 	if(player.formatCount>=1){
@@ -174,8 +198,10 @@ function update(){
 		$("#format_stat2").html(formatWhole(player.formatCount));
 		$("#format_stat3").html(formatTime(player.bestFormatTime));
 		$("#format_stat4").html(formatTime(player.formatTime));
+		$("#fp2").html((zhMode?"，":", ")+formatWhole(player.formatPoints)+(zhMode?"格式化点数":" Format Points"));
 	}else{
 		$("#format_stat").css("display","none");
+		$("#fp2").html("");
 	}
 	
 	$("#total_time").html(formatTime(player.playTime));

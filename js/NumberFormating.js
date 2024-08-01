@@ -78,6 +78,7 @@ function formatWhole(decimal) {
 
 function formatData(decimal) {
     decimal = new Decimal(decimal)
+	if (decimal.gte(1e30))return format(decimal)+"B";
 	if (decimal.lt(1))return format(decimal.mul(8),0)+"b";
 	if (decimal.lt(1024))return formatWhole(decimal)+"B";
 	if (decimal.lt(2**20))return format(decimal.div(1024))+"KB";
@@ -92,6 +93,7 @@ function formatData(decimal) {
 
 function formatData2(decimal) {
     decimal = new Decimal(decimal)
+	if (decimal.gte(1e30))return format(decimal)+"B";
 	if (decimal.lt(1))return format(decimal.mul(8))+"b";
 	if (decimal.lt(1024))return format(decimal)+"B";
 	if (decimal.lt(2**20))return format(decimal.div(1024))+"KB";

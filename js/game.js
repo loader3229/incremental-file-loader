@@ -31,6 +31,14 @@ function show_format(){
 	}
 }
 
+function show_shop(){
+	if(getLoadedFiles(7).gte(1)){
+		alert("Coming soon...");
+	}else{
+		loadFile(7);
+	}
+}
+
 function loadFile(a){
 	player.loading=a;
 }
@@ -120,7 +128,7 @@ function realBitcoinGain(){
 	return a;
 }
 
-var LENGTH=[5,5,5,50,100,500,1000];
+var LENGTH=[5,5,5,50,100,500,1e3,4e3];
 var tick=Date.now();
 var devSpeed=1;
 function update(){
@@ -146,7 +154,7 @@ function update(){
 		player.loaded_files[player.loading]=getLoadedFiles(player.loading).add((getLoaderSpeed()).mul(diff).div(LENGTH[player.loading]));
 	}
 	
-	for(var i=0;i<=6;i++){
+	for(var i=0;i<=7;i++){
 		$("#p"+i).width(getLoadedFiles(i).sub(Decimal.floor(getLoadedFiles(i))).mul(100).toNumber()+"%");
 		if(player.loading==i)$("#p"+i+"a").addClass("active");
 		else $("#p"+i+"a").removeClass("active");
@@ -165,7 +173,7 @@ function update(){
 	
 	$("#speed").html(format(getLoaderSpeed()));
 	
-	if(player.loading==0 || player.loading==2 || player.loading==5){
+	if(player.loading==0 || player.loading==2 || player.loading==5 || player.loading==7){
 		if(player.loaded_files[player.loading].gte(1)){
 			player.loaded_files[player.loading]=new Decimal(1);
 			player.loading=-1;
@@ -175,21 +183,22 @@ function update(){
 	$("#p0a").css("display",getLoadedFiles(0).gte(1)?"none":"");
 	$("#p2a").css("display",getLoadedFiles(2).gte(1)?"none":"");
 	$("#p5a").css("display",getLoadedFiles(5).gte(1)?"none":"");
+	$("#p7a").css("display",getLoadedFiles(7).gte(1)?"none":"");
 	$("#upgrades_exe").css("display",hasAchievement(0)?"":"none");
 	$("#adder_exe").css("display",hasAchievement(1)?"":"none");
 	$("#multiplier_exe").css("display",hasAchievement(2)?"":"none");
 	$("#format_exe").css("display",hasAchievement(3)?"":"none");
 	$("#upgrade1").css("display",hasAchievement(4)?"":"none");
-	$("#miner_exe").css("display",hasAchievement(5)?"":"none");
+	$("#producer_exe").css("display",hasAchievement(5)?"":"none");
 	
 	$("#adder_effect").css("display",hasAchievement(1)?"":"none");
 	$("#multiplier_effect").css("display",hasAchievement(2)?"":"none");
-	$("#miner_effect").css("display",hasAchievement(5)?"":"none");
+	$("#producer_effect").css("display",hasAchievement(5)?"":"none");
 	
 	$("#data_generator_effect").html("data_generator.exe: +"+formatData2(dataGain())+(zhMode?" 数据/秒":" Data/s")+"<br>");
 	$("#adder_effect").html("adder.exe: +"+formatData2(getLoadedFiles(3).floor().sqrt().mul(1).div(10))+(zhMode?" data_generator.exe的基本数据/秒":" Base Data/s to data_generator.exe")+"<br>");
 	$("#multiplier_effect").html("multiplier.exe: *"+format(getLoadedFiles(4).floor().sqrt().mul(1).add(1))+(zhMode?" data_generator.exe的速度":" to data_generator.exe")+"<br>");
-	$("#miner_effect").html("miner.exe: +"+format(realBitcoinGain(),4)+(zhMode?" 加密货币/秒（基础：":" Bitcoin/sec (Base:")+format(bitcoinGain(),4)+(zhMode?" 加密货币/秒，基于数据）":" Bitcoin/sec based on data)")+"<br>");
+	$("#producer_effect").html("producer.exe: +"+format(realBitcoinGain(),4)+(zhMode?" 文件点数/秒（基础：":" Bitcoin/sec (Base:")+format(bitcoinGain(),4)+(zhMode?" 文件点数/秒，基于数据）":" Bitcoin/sec based on data)")+"<br>");
 	$("#format_reset_link").html((zhMode?"格式化以得到":"Format for ")+formatWhole(formatPointGain())+(zhMode?"格式化点数":" Format Points")+"<br>");
 	
 	if(player.formatCount>=1){
@@ -202,6 +211,15 @@ function update(){
 	}else{
 		$("#format_stat").css("display","none");
 		$("#fp2").html("");
+	}
+	
+	if(hasAchievement(5)){
+		$("#bitcoin_stat").css("display","");
+		$("#bitcoin_stat1").html(format(player.totalBitcoin));
+		$("#bc2").html((zhMode?"，":", ")+format(player.bitcoin)+(zhMode?"文件点数":" Bitcoins"));
+	}else{
+		$("#bitcoin_stat").css("display","none");
+		$("#bc2").html("");
 	}
 	
 	$("#total_time").html(formatTime(player.playTime));

@@ -119,6 +119,12 @@ top:20px;
 left:190px;
 }
 
+#shop_exe{
+top:20px;
+left:275px;
+}
+
+
 #achievements_exe{
 top:150px;
 left:20px;
@@ -209,7 +215,7 @@ left:170px;
 }
 
 
-#miner_exe{
+#producer_exe{
 top:100px;
 left:255px;
 }

@@ -1,7 +1,7 @@
 ﻿<html lang="en">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader 0.1.1 by loader3229</title>
+<title>Incremental File Loader 0.1.2 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=false;</script>
 <script src="js/jquery.min.js"></script>
@@ -36,6 +36,11 @@
 <div class="text">format.exe</div>
 </div>
 
+<div id="shop_exe" class="file" onclick="show_shop();">
+<div id="p7a" class="progress_bar"><div id="p7" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">shop.exe</div>
+</div>
 
 
 <div id="about_exe" class="file" onclick="show_window('about');">
@@ -66,7 +71,7 @@
 <div id="main" class="window">
 <div class="close" onclick="hide_window('main');">X</div>
 <div class="inner">
-<h2>You have <span id="data1">0b</span> data.</h2>
+<h2>You have <span id="data1">0b</span> data<span id="bc2"></span>.</h2>
 <hr>
 <div style="height:150px;"></div>
 
@@ -92,10 +97,10 @@
 <div id="cnt4" class="cnt">0</div>
 </div>
 
-<div id="miner_exe" class="file" onclick="loadFile(6);">
+<div id="producer_exe" class="file" onclick="loadFile(6);">
 <div id="p6a" class="progress_bar"><div id="p6" class="progress_bar1"></div></div>
 <img src="images/exe.png">
-<div class="text">miner.exe</div>
+<div class="text">producer.exe</div>
 <div id="cnt6" class="cnt">0</div>
 </div>
 
@@ -103,7 +108,7 @@
 <span id="data_generator_effect"></span>
 <span id="adder_effect"></span>
 <span id="multiplier_effect"></span>
-<span id="miner_effect"></span>
+<span id="producer_effect"></span>
 </div>
 </div>
 
@@ -154,7 +159,7 @@ Achievements inspired by <a href="https://ivark.github.io">Antimatter Dimensions
 <div id="stats" class="window">
 <div class="close" onclick="hide_window('stats');">X</div>
 <div class="inner">
-You produced a total of <span id="total_data">0b</span> data.<br>
+You produced a total of <span id="total_data">0b</span> data<span id="bitcoin_stat"> and <span id="bitcoin_stat1"></span> Bitcoins</span>.<br>
 You played this game for <span id="total_time"></span>.<hr>
 <div id="format_stat">
 You produced a total of <span id="format_stat1">0b</span> format points.<br>

@@ -4,7 +4,8 @@ var ACHIEVEMENTS=[
 	["10x Speed!","Reach Level 10 File Loader.","Unlock multiplier.exe in file_loader.exe","10倍速度！","将文件加载器升级到10级","在file_loader.exe里面解锁multiplier.exe"],
 	["Millionaire","Produce a total of 1MB data.","Unlock format.exe","百万富翁","总计生产1MB数据。","解锁format.exe"],
 	["All that data are gone!","Perform a format reset.","Unlock a new upgrade in upgrades.exe","所有的数据都丢失了！","进行一次格式化。","在upgrades.exe里面解锁新的升级"],
-	["Unsigned Integer overflow","Produce a total of 4GB data.","Unlock miner.exe in file_loader.exe","无符号整型溢出","总计生产4GB数据。","在file_loader.exe里面解锁miner.exe"]
+	["Unsigned Integer overflow","Produce a total of 4GB data.","Unlock producer.exe in file_loader.exe","无符号整型溢出","总计生产4GB数据。","在file_loader.exe里面解锁producer.exe"],
+	["Money Get!","Produce a total of 1 Bitcoin.","Unlock shop.exe","新的点数！","总计生产1文件点数。","解锁shop.exe"]
 ]
 
 function init_achievements(){
@@ -73,6 +74,9 @@ function checkAchievements(){
 	}
 	if(player.totalData.gte(2**32)){
 		getAchievement(5);
+	}
+	if(player.totalBitcoin.gte(1)){
+		getAchievement(6);
 	}
 	
 	$('#achcount').html(player.achievements.length);

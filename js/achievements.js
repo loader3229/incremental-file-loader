@@ -5,7 +5,18 @@ var ACHIEVEMENTS=[
 	["Millionaire","Produce a total of 1MB data.","Unlock format.exe","百万富翁","总计生产1MB数据。","解锁format.exe"],
 	["All that data are gone!","Perform a format reset.","Unlock a new upgrade in upgrades.exe","所有的数据都丢失了！","进行一次格式化。","在upgrades.exe里面解锁新的升级"],
 	["Unsigned Integer overflow","Produce a total of 4GB data.","Unlock producer.exe in file_loader.exe","无符号整型溢出","总计生产4GB数据。","在file_loader.exe里面解锁producer.exe"],
-	["Money Get!","Produce a total of 1 Bitcoin.","Unlock shop.exe","新的点数！","总计生产1文件点数。","解锁shop.exe"]
+	["Money Get!","Produce a total of 1 Bitcoin.","Unlock shop.exe","新的点数！","总计生产1文件点数。","解锁shop.exe"],
+	["Millionaire II","Produce a total of 1000000 Format Points.","Unlock a new upgrade in upgrades.exe","百万富翁2","总计生产1000000格式化点数。","在upgrades.exe里面解锁新的升级"],
+	["100 Bitcoins is a lot","Have 100 Bitcoins at once.","Unlock a new shop upgrade","100文件点数就是很多了","拥有100文件点数","在shop.exe里面解锁新的升级"],
+	["Data Apocalypse","Produce a total of 1YB data.","Double Format Points and Bitcoin gain","数据洪流","总计生产1YB数据。","格式化点数和文件点数获取翻倍"],
+	["Meta-Achievement","Have 10 Achievements.","adder.exe, multiplier.exe and producer.exe are better based on achievements (max 20)","元-成就","拥有10个成就。","根据成就数量（最大20），adder.exe，multiplier.exe和producer.exe的公式变得更好"],
+	["Scientific Notation","Produce a total of 1e30B data.","Unlock a new upgrade in upgrades.exe","科学计数法","总计生产1e30B数据。","在upgrades.exe里面解锁新的升级"],
+	["That's FAST!","Reach Level 100 File Loader.","Unlock a new shop upgrade","这很快了！","将文件加载器升级到100级","在shop.exe里面解锁新的升级"],
+	["Unsigned Integer overflow II","Load data_generator.exe 4294967296 times.","Unlock data_generator_loader.exe in file_loader.exe","无符号整型溢出2","加载4294967296次data_generator.exe","在file_loader.exe里面解锁data_generator_loader.exe"],
+	["1000x harder","Let actual bitcoin gain < 0.1% of base bitcoin gain.","Double Format Points and Bitcoin gain","1000倍压力","使实际文件点数获取<0.1%的基础文件点数获取","格式化点数和文件点数获取翻倍"],
+	["100 quindecillion=sqrt(googol)","Produce a total of 1e50B data.","Achievement Bonus boost Data and Bitcoin gain","100极=0.01恒河沙=古戈尔的平方根","总计生产1e50B数据。","成就加成对数据和文件点数生效"],
+	["Completely Formatted","Produce a total of 1e20 Format Points.","Achievement Bonus boost Format Points gain and data_generator_loader.exe","完全格式化","总计生产1e20格式化点数。","成就加成对格式化点数和data_generator_loader.exe生效"],
+	["10000x harder","Let actual bitcoin gain < 0.01% of base bitcoin gain.","2.5x Format Points and Bitcoin gain","10000倍压力","使实际文件点数获取<0.1%的基础文件点数获取","格式化点数和文件点数获取变为2.5倍"],
 ]
 
 function init_achievements(){
@@ -63,7 +74,7 @@ function checkAchievements(){
 	if(player.totalData.gte(100)){
 		getAchievement(1);
 	}
-	if(getUpgradeLevel(0).gte(9)){
+	if(getUpgradeLevel(0).add(getFormatUpgradeLevel(0)).add(getBcUpgradeLevel(0)).gte(9)){
 		getAchievement(2);
 	}
 	if(player.totalData.gte(2**20)){
@@ -77,6 +88,39 @@ function checkAchievements(){
 	}
 	if(player.totalBitcoin.gte(1)){
 		getAchievement(6);
+	}
+	if(player.totalFormatPoints.gte(1e6)){
+		getAchievement(7);
+	}
+	if(player.bitcoin.gte(100)){
+		getAchievement(8);
+	}
+	if(player.totalData.gte(2**80)){
+		getAchievement(9);
+	}
+	if(player.achievements.length>=10){
+		getAchievement(10);
+	}
+	if(player.totalData.gte(1e30)){
+		getAchievement(11);
+	}
+	if(getUpgradeLevel(0).add(getFormatUpgradeLevel(0)).add(getBcUpgradeLevel(0)).gte(99)){
+		getAchievement(12);
+	}
+	if(getLoadedFiles(1).gte(2**32)){
+		getAchievement(13);
+	}
+	if(realBitcoinGain().mul(1000).lt(bitcoinGain())){
+		getAchievement(14);
+	}
+	if(player.totalData.gte(1e50)){
+		getAchievement(15);
+	}
+	if(player.totalFormatPoints.gte(1e20)){
+		getAchievement(16);
+	}
+	if(realBitcoinGain().mul(10000).lt(bitcoinGain())){
+		getAchievement(17);
 	}
 	
 	$('#achcount').html(player.achievements.length);

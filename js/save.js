@@ -9,6 +9,7 @@ function getInitPlayer(){
 		totalBitcoin:new Decimal(0),
 		upgrades:[],
 		formatUpgrades:[],
+		bcUpgrades:[],
 		loading:-1,
 		playTime:0,
 		formatTime:0,
@@ -43,6 +44,7 @@ function loadgame(){
 	for(var i in player1.loaded_files)player.loaded_files[i]=new Decimal(player1.loaded_files[i]);
 	for(var i in player1.upgrades)player.upgrades[i]=new Decimal(player1.upgrades[i]);
 	for(var i in player1.formatUpgrades)player.formatUpgrades[i]=new Decimal(player1.formatUpgrades[i]);
+	for(var i in player1.bcUpgrades)player.bcUpgrades[i]=new Decimal(player1.bcUpgrades[i]);
 	for(var i in player1.achievements)player.achievements[i]=player1.achievements[i];
 	player.loading=player1.loading || -1;
 	player.playTime=player1.playTime || 0;

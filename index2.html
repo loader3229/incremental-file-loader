@@ -1,7 +1,7 @@
 ﻿<html lang="zh-cn">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader 0.1.2 by loader3229</title>
+<title>Incremental File Loader 0.2 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=true;</script>
 <script src="js/jquery.min.js"></script>
@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader 0.1.2 by loader3229 | <span id="data2">0b</span> 数据</span>
+<span id="gametitle">Incremental File Loader 0.2 by loader3229 | <span id="data2">0b</span> 数据</span>
 <span id="ach" style="opacity:0;"></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -104,11 +104,19 @@
 <div id="cnt6" class="cnt">0</div>
 </div>
 
+<div id="file8" class="file" onclick="loadFile(8);">
+<div id="p8a" class="progress_bar"><div id="p8" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">data_generator_loader.exe</div>
+<div id="cnt8" class="cnt">0</div>
+</div>
+
 <hr>
 <span id="data_generator_effect"></span>
 <span id="adder_effect"></span>
 <span id="multiplier_effect"></span>
 <span id="producer_effect"></span>
+<span id="file8_effect"></span>
 </div>
 </div>
 
@@ -122,6 +130,10 @@
 <a id="upg0c" href="javascript:upgrade(0);">升级</a> <a id="format_upg0" href="javascript:formatUpgrade(0);">升级</a> <hr>
 <div id="upgrade1" style="display:none;">数据加成 等级<span id="upg1">upgrade</span>，加成：<span id="upg1e"></span>x<br>
 <a id="upg1c" href="javascript:upgrade(1);">升级</a> <a id="format_upg1" href="javascript:formatUpgrade(1);">升级</a> <hr></div>
+<div id="upgrade2" style="display:none;">格式化点数加成 等级<span id="upg2">upgrade</span>，加成：<span id="upg2e"></span>x<br>
+<a id="upg2c" href="javascript:upgrade(2);">升级</a> <a id="format_upg2" href="javascript:formatUpgrade(2);">升级</a> <hr></div>
+<div id="upgrade3" style="display:none;">文件点数加成 等级<span id="upg3">upgrade</span>，加成：<span id="upg3e"></span>x<br>
+<a id="upg3c" href="javascript:upgrade(3);">升级</a> <a id="format_upg3" href="javascript:formatUpgrade(3);">升级</a> <hr></div>
 </div>
 </div>
 
@@ -133,6 +145,19 @@
 格式化需要1MB数据，并且会重置file_loader.exe里面所有的文件和数据，但是你可以得到格式化点数。<br>
 <a href="javascript:format_reset();" id="format_reset_link">格式化</a><hr>
 格式化点数可以用于购买upgrades.exe里面的升级。<br>
+</div>
+</div>
+
+<div id="shop" class="window">
+<div class="close" onclick="hide_window('shop');">X</div>
+<div class="inner">
+<h2>你拥有 <span id="bc1">0</span>文件点数。</h2>
+<hr>
+第一个升级的等级+1。<a id="bcupg0" href="javascript:bcUpgrade(0);">Upgrade</a><br>
+第二个升级的等级+1。<a id="bcupg1" href="javascript:bcUpgrade(1);">Upgrade</a><br>
+<div id="bcu2" style="display:none;">第三个升级的等级+1。<a id="bcupg2" href="javascript:bcUpgrade(2);">Upgrade</a><br></div>
+<div id="bcu3" style="display:none;">第四个升级的等级+1。<a id="bcupg3" href="javascript:bcUpgrade(3);">Upgrade</a><br></div>
+
 </div>
 </div>
 

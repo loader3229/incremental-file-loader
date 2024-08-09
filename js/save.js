@@ -16,6 +16,7 @@ function getInitPlayer(){
 		formatCount:0,
 		bestFormatTime:1e308,
 		achievements:[],
+		pc:new Decimal(0),
 	};
 }
 
@@ -41,6 +42,7 @@ function loadgame(){
 	if(player1.totalFormatPoints)player.totalFormatPoints=new Decimal(player1.totalFormatPoints);
 	if(player1.bitcoin)player.bitcoin=new Decimal(player1.bitcoin);
 	if(player1.totalBitcoin)player.totalBitcoin=new Decimal(player1.totalBitcoin);
+	if(player1.pc)player.pc=new Decimal(player1.pc);
 	for(var i in player1.loaded_files)player.loaded_files[i]=new Decimal(player1.loaded_files[i]);
 	for(var i in player1.upgrades)player.upgrades[i]=new Decimal(player1.upgrades[i]);
 	for(var i in player1.formatUpgrades)player.formatUpgrades[i]=new Decimal(player1.formatUpgrades[i]);

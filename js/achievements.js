@@ -16,7 +16,8 @@ var ACHIEVEMENTS=[
 	["1000x harder","Let actual bitcoin gain < 0.1% of base bitcoin gain.","Double Format Points and Bitcoin gain","1000倍压力","使实际文件点数获取<0.1%的基础文件点数获取","格式化点数和文件点数获取翻倍"],
 	["100 quindecillion=sqrt(googol)","Produce a total of 1e50B data.","Achievement Bonus boost Data and Bitcoin gain","100极=0.01恒河沙=古戈尔的平方根","总计生产1e50B数据。","成就加成对数据和文件点数生效"],
 	["Completely Formatted","Produce a total of 1e20 Format Points.","Achievement Bonus boost Format Points gain and data_generator_loader.exe","完全格式化","总计生产1e20格式化点数。","成就加成对格式化点数和data_generator_loader.exe生效"],
-	["10000x harder","Let actual bitcoin gain < 0.01% of base bitcoin gain.","2.5x Format Points and Bitcoin gain","10000倍压力","使实际文件点数获取<0.1%的基础文件点数获取","格式化点数和文件点数获取变为2.5倍"],
+	["A New Beginning","Buy a new PC.","2.5x Format Point gain","新的开始","购买一台新的电脑。","格式化点数获取变为2.5倍"],
+	["Small Network","Buy 3 new PCs.","2.5x Bitcoin gain","小型网络","购买三台新的电脑。","文件点数获取变为2.5倍"],
 ]
 
 function init_achievements(){
@@ -119,8 +120,11 @@ function checkAchievements(){
 	if(player.totalFormatPoints.gte(1e20)){
 		getAchievement(16);
 	}
-	if(realBitcoinGain().mul(10000).lt(bitcoinGain())){
+	if(player.pc.gte(1)){
 		getAchievement(17);
+	}
+	if(player.pc.gte(3)){
+		getAchievement(18);
 	}
 	
 	$('#achcount').html(player.achievements.length);

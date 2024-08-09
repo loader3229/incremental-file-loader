@@ -1,7 +1,7 @@
 ﻿<html lang="en">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader 0.2 by loader3229</title>
+<title>Incremental File Loader v0.3 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=false;</script>
 <script src="js/jquery.min.js"></script>
@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader 0.2 by loader3229 | <span id="data2">0b</span> Data</span>
+<span id="gametitle">Incremental File Loader v0.3 by loader3229 | <span id="data2">0b</span> Data</span>
 <span id="ach" style="opacity:0;"></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -152,11 +152,14 @@ Format points can be used to buy upgrades in upgrades.exe.<br>
 <div class="inner">
 <h2>You have <span id="bc1">0</span> Bitcoins.</h2>
 <hr>
-Increase the level of first upgrade by 1. <a id="bcupg0" href="javascript:bcUpgrade(0);">Upgrade</a><br>
-Increase the level of second upgrade by 1. <a id="bcupg1" href="javascript:bcUpgrade(1);">Upgrade</a><br>
-<div id="bcu2" style="display:none;">Increase the level of third upgrade by 1. <a id="bcupg2" href="javascript:bcUpgrade(2);">Upgrade</a><br></div>
-<div id="bcu3" style="display:none;">Increase the level of fourth upgrade by 1. <a id="bcupg3" href="javascript:bcUpgrade(3);">Upgrade</a><br></div>
-
+CPU Level <span id="bcu0a"></span>, which increase the level of first upgrade by <span id="bcu0b"></span>. <a id="bcupg0" href="javascript:bcUpgrade(0);">Upgrade</a><br>
+RAM Level <span id="bcu1a"></span>, which increase the level of second upgrade by <span id="bcu1b"></span>. <a id="bcupg1" href="javascript:bcUpgrade(1);">Upgrade</a><br>
+<div id="bcu2" style="display:none;">Hard Disk Level <span id="bcu2a"></span>, which increase the level of third upgrade by <span id="bcu2b"></span>. <a id="bcupg2" href="javascript:bcUpgrade(2);">Upgrade</a><br></div>
+<div id="bcu3" style="display:none;">Network Level <span id="bcu3a"></span>, which increase the level of fourth upgrade by <span id="bcu3b"></span>. <a id="bcupg3" href="javascript:bcUpgrade(3);">Upgrade</a><br></div>
+<hr>
+You have <span id="pc1"></span> Bought PCs, which are boosting File Loader Speed, Data Gain, Bitcoin Gain by <span id="pc2"></span>x.<br>
+Buying a new PC will force a format reset, and reset all upgrades and format points.<br>
+<a href="javascript:buypc();" id="buypc"></a>
 </div>
 </div>
 

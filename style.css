@@ -67,7 +67,8 @@ font-size:12px;
 height:20px;
 word-break:break-all;
 z-index:1;
-background-color:rgba(0,0,0,0.15);
+background-color:rgba(0,0,0,0.5);
+color:white;
 }
 
 .file .progress_bar{

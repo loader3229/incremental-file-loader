@@ -3,6 +3,7 @@ function getLoaderSpeed(){
 	let a=new Decimal(1);
 	a=a.mul(getAchievementBonus());
 	a=a.mul(getUpgradeEffect(0));
+	a=a.mul(getPcBonus());
 	if((sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a'))a = a.mul(1.5);
 	return a;
 }
@@ -115,6 +116,7 @@ function bcUpgrade(a){
 		player.bcUpgrades[a]=getBcUpgradeLevel(a).add(1);
 	}
 }
+
 function format_reset(){
 	if(formatPointGain().gte(1)){
 		player.formatPoints=player.formatPoints.add(formatPointGain());
@@ -141,6 +143,7 @@ function metaAch1Eff(){
 function dataGain(){
 	let a=getLoadedFiles(1).floor().div(10).mul(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getLoadedFiles(4).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getUpgradeEffect(1));
 	if(hasAchievement(15))a=a.mul(getAchievementBonus());
+	a=a.mul(getPcBonus());
 	if((sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a'))a = a.mul(1.5);
 	return a;
 }
@@ -160,9 +163,10 @@ function bitcoinGain(){
 	let a=player.data.add(1).max(1).log10().mul(getLoadedFiles(6).floor().add(1).max(1).log10().pow(2)).div(100);
 	if(hasAchievement(9))a=a.mul(2);
 	if(hasAchievement(14))a=a.mul(2);
-	if(hasAchievement(17))a=a.mul(2.5);
+	if(hasAchievement(18))a=a.mul(2.5);
 	if(hasAchievement(15))a=a.mul(getAchievementBonus());
 	a=a.mul(getUpgradeEffect(3));
+	a=a.mul(getPcBonus());
 	return a;
 }
 
@@ -172,7 +176,26 @@ function realBitcoinGain(){
 }
 
 function fileEffect(a){
-	if(a==8)return getLoadedFiles(a).mul(player.data.add(10).log10()).mul(hasAchievement(16)?getAchievementBonus():1);
+	if(a==8)return getLoadedFiles(a).floor().mul(player.data.add(10).log10()).mul(hasAchievement(16)?getAchievementBonus():1);
+}
+
+function getPcReq(){
+	return Decimal.pow(1.5,player.pc).mul(20000);
+}
+
+function getPcBonus(){
+	return player.pc.add(1);
+}
+
+function buypc(){
+	if(player.bitcoin.gte(getPcReq())){
+		format_reset();
+		player.upgrades=[];
+		player.formatPoints=new Decimal(0);
+		player.formatUpgrades=[];
+		player.bitcoin=player.bitcoin.sub(getPcReq());
+		player.pc=player.pc.add(1);
+	}
 }
 
 var LENGTH=[5,5,5,50,100,500,1e3,4e3,100];
@@ -223,7 +246,9 @@ function update(){
 	}
 	
 	for(var i=0;i<=3;i++){
-		$("#bcupg"+i).html((zhMode?"购买（":"Buy (")+format(getBcUpgradeCost(i))+(zhMode?"文件点数）":" Bitcoins)"));
+		$("#bcu"+i+"a").html(formatWhole(getBcUpgradeLevel(i)));
+		$("#bcu"+i+"b").html(formatWhole(getBcUpgradeLevel(i)));
+		$("#bcupg"+i).html((zhMode?"升级（":"Upgrade (")+format(getBcUpgradeCost(i))+(zhMode?"文件点数）":" Bitcoins)"));
 	}
 	
 	$("#speed").html(format(getLoaderSpeed()));
@@ -292,6 +317,9 @@ function update(){
 	$("#fp1").html(formatWhole(player.formatPoints));
 	$("#bc1").html(format(player.bitcoin));
 	
+	$("#pc1").html(formatWhole(player.pc));
+	$("#pc2").html(format(getPcBonus()));
+	$("#buypc").html((zhMode?"购买新的计算机（":"Buy a new PC (")+format(getPcReq())+(zhMode?"文件点数）":" Bitcoins)"));
 	checkAchievements();
 }
 

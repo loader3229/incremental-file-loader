@@ -9,7 +9,7 @@ var ACHIEVEMENTS=[
 	["Millionaire II","Produce a total of 1000000 Format Points.","Unlock a new upgrade in upgrades.exe","百万富翁2","总计生产1000000格式化点数。","在upgrades.exe里面解锁新的升级"],
 	["100 Bitcoins is a lot","Have 100 Bitcoins at once.","Unlock a new shop upgrade","100文件点数就是很多了","拥有100文件点数","在shop.exe里面解锁新的升级"],
 	["Data Apocalypse","Produce a total of 1YB data.","Double Format Points and Bitcoin gain","数据洪流","总计生产1YB数据。","格式化点数和文件点数获取翻倍"],
-	["Meta-Achievement","Have 10 Achievements.","adder.exe, multiplier.exe and producer.exe are better based on achievements (max 20)","元-成就","拥有10个成就。","根据成就数量（最大20），adder.exe，multiplier.exe和producer.exe的公式变得更好"],
+	["Meta-Achievement","Have 10 Achievements.","adder.exe and multiplier.exe are better based on achievements (max 20)","元-成就","拥有10个成就。","根据成就数量（最大20），adder.exe和multiplier.exe的公式变得更好"],
 	["Scientific Notation","Produce a total of 1e30B data.","Unlock a new upgrade in upgrades.exe","科学计数法","总计生产1e30B数据。","在upgrades.exe里面解锁新的升级"],
 	["That's FAST!","Reach Level 100 File Loader.","Unlock a new shop upgrade","这很快了！","将文件加载器升级到100级","在shop.exe里面解锁新的升级"],
 	["Unsigned Integer overflow II","Load data_generator.exe 4294967296 times.","Unlock data_generator_loader.exe in file_loader.exe","无符号整型溢出2","加载4294967296次data_generator.exe","在file_loader.exe里面解锁data_generator_loader.exe"],
@@ -18,6 +18,8 @@ var ACHIEVEMENTS=[
 	["Completely Formatted","Produce a total of 1e20 Format Points.","Achievement Bonus boost Format Points gain and data_generator_loader.exe","完全格式化","总计生产1e20格式化点数。","成就加成对格式化点数和data_generator_loader.exe生效"],
 	["A New Beginning","Buy a new PC.","2.5x Format Point gain","新的开始","购买一台新的电脑。","格式化点数获取变为2.5倍"],
 	["Small Network","Buy 3 new PCs.","2.5x Bitcoin gain","小型网络","购买三台新的电脑。","文件点数获取变为2.5倍"],
+	["One for each day in a week","Buy 7 new PCs.","Data price of 3rd upgrade is cheaper.","一周内每天都有一个","购买7台新的电脑。","使用数据购买第3个升级的价格更便宜"],
+	["Meta-Achievement II","Have 20 Achievements.","data_generator_loader.exe and producer.exe are better based on achievements","元-成就 II","拥有20个成就。","根据成就数量，data_generator_loader.exe和producer.exe的公式变得更好"],
 ]
 
 function init_achievements(){
@@ -125,6 +127,12 @@ function checkAchievements(){
 	}
 	if(player.pc.gte(3)){
 		getAchievement(18);
+	}
+	if(player.pc.gte(7)){
+		getAchievement(19);
+	}
+	if(player.achievements.length>=20){
+		getAchievement(20);
 	}
 	
 	$('#achcount').html(player.achievements.length);

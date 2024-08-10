@@ -71,6 +71,7 @@ function getBcUpgradeLevel(a){
 function getUpgradeCost(a){
 	if(a==0)return Decimal.pow(2,getUpgradeLevel(a).pow(1.2));
 	if(a==1)return Decimal.pow(2,getUpgradeLevel(a).mul(2).add(10));
+	if(a==2 && hasAchievement(19))return Decimal.pow(1.9,Decimal.pow(1.9,getUpgradeLevel(a)));
 	if(a==2)return Decimal.pow(2,Decimal.pow(2,getUpgradeLevel(a).add(5)));
 	if(a==3)return Decimal.pow(10,Decimal.pow(1.1,getUpgradeLevel(a).pow(2)).mul(30));
 }
@@ -140,6 +141,11 @@ function metaAch1Eff(){
 	return player.achievements.length/20;
 }
 
+function metaAch2Eff(){
+	if(player.achievements.length<=20)return 1;
+	return player.achievements.length/20;
+}
+
 function dataGain(){
 	let a=getLoadedFiles(1).floor().div(10).mul(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getLoadedFiles(4).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getUpgradeEffect(1));
 	if(hasAchievement(15))a=a.mul(getAchievementBonus());
@@ -160,7 +166,7 @@ function formatPointGain(){
 }
 
 function bitcoinGain(){
-	let a=player.data.add(1).max(1).log10().mul(getLoadedFiles(6).floor().add(1).max(1).log10().pow(2)).div(100);
+	let a=player.data.add(1).max(1).log10().pow(metaAch2Eff()).mul(getLoadedFiles(6).floor().add(1).max(1).log10().pow(2)).div(100);
 	if(hasAchievement(9))a=a.mul(2);
 	if(hasAchievement(14))a=a.mul(2);
 	if(hasAchievement(18))a=a.mul(2.5);
@@ -176,7 +182,7 @@ function realBitcoinGain(){
 }
 
 function fileEffect(a){
-	if(a==8)return getLoadedFiles(a).floor().mul(player.data.add(10).log10()).mul(hasAchievement(16)?getAchievementBonus():1);
+	if(a==8)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff())).mul(hasAchievement(16)?getAchievementBonus():1);
 }
 
 function getPcReq(){

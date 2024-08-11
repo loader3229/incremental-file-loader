@@ -17,6 +17,7 @@ function getInitPlayer(){
 		bestFormatTime:1e308,
 		achievements:[],
 		pc:new Decimal(0),
+		os:new Decimal(0),
 	};
 }
 
@@ -43,6 +44,7 @@ function loadgame(){
 	if(player1.bitcoin)player.bitcoin=new Decimal(player1.bitcoin);
 	if(player1.totalBitcoin)player.totalBitcoin=new Decimal(player1.totalBitcoin);
 	if(player1.pc)player.pc=new Decimal(player1.pc);
+	if(player1.os)player.os=new Decimal(player1.os);
 	for(var i in player1.loaded_files)player.loaded_files[i]=new Decimal(player1.loaded_files[i]);
 	for(var i in player1.upgrades)player.upgrades[i]=new Decimal(player1.upgrades[i]);
 	for(var i in player1.formatUpgrades)player.formatUpgrades[i]=new Decimal(player1.formatUpgrades[i]);
@@ -67,14 +69,17 @@ function exportgame(){
 }
 
 function importgame(){
-	let s=prompt("Input your save.");
+	let s=prompt(zhMode?"请输入存档":"Input your save.");
 	try{
 		let player1=JSON.parse(atob(s));
-		if(player1.loaded_files === undefined)return;
-		clearInterval(saveInterval);
-		localStorage.FileLoaderSave=btoa(JSON.stringify(player1));
-		document.location.reload();
+		if(player1.loaded_files !== undefined && player1.data !== undefined){
+			clearInterval(saveInterval);
+			localStorage.FileLoaderSave=btoa(JSON.stringify(player1));
+			document.location.reload();
+			return;
+		}
 	}catch(e){
 		
 	}
+	alert(zhMode?"存档不合法":"Your save is invalid.");
 }

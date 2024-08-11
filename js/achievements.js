@@ -16,10 +16,12 @@ var ACHIEVEMENTS=[
 	["1000x harder","Let actual bitcoin gain < 0.1% of base bitcoin gain.","Double Format Points and Bitcoin gain","1000倍压力","使实际文件点数获取<0.1%的基础文件点数获取","格式化点数和文件点数获取翻倍"],
 	["100 quindecillion=sqrt(googol)","Produce a total of 1e50B data.","Achievement Bonus boost Data and Bitcoin gain","100极=0.01恒河沙=古戈尔的平方根","总计生产1e50B数据。","成就加成对数据和文件点数生效"],
 	["Completely Formatted","Produce a total of 1e20 Format Points.","Achievement Bonus boost Format Points gain and data_generator_loader.exe","完全格式化","总计生产1e20格式化点数。","成就加成对格式化点数和data_generator_loader.exe生效"],
-	["A New Beginning","Buy a new PC.","2.5x Format Point gain","新的开始","购买一台新的电脑。","格式化点数获取变为2.5倍"],
-	["Small Network","Buy 3 new PCs.","2.5x Bitcoin gain","小型网络","购买三台新的电脑。","文件点数获取变为2.5倍"],
-	["One for each day in a week","Buy 7 new PCs.","Data price of 3rd upgrade is cheaper.","一周内每天都有一个","购买7台新的电脑。","使用数据购买第3个升级的价格更便宜"],
+	["A New Beginning","Buy a new PC.","2.5x Format Point gain","新的开始","购买一台新的计算机。","格式化点数获取变为2.5倍"],
+	["Small Network","Buy 3 new PCs.","2.5x Bitcoin gain","小型网络","购买三台新的计算机。","文件点数获取变为2.5倍"],
+	["One for each day in a week","Buy 7 new PCs.","Data price of 3rd upgrade is cheaper.","一周内每天都有一个","购买7台新的计算机。","使用数据购买第3个升级的价格更便宜"],
 	["Meta-Achievement II","Have 20 Achievements.","data_generator_loader.exe and producer.exe are better based on achievements","元-成就 II","拥有20个成就。","根据成就数量，data_generator_loader.exe和producer.exe的公式变得更好"],
+	["DecaSpeed","Buy 10 new PCs.","Unlock os_upgrader.exe","十倍速度","购买10台新的计算机。","解锁os_upgrader.exe"],
+	["Googol!","Produce a total of 1e100B data.","Divide PC price by 2","古戈尔！","总计生产1e100B数据。","购买计算机的花费除以2。"],
 ]
 
 function init_achievements(){
@@ -133,6 +135,12 @@ function checkAchievements(){
 	}
 	if(player.achievements.length>=20){
 		getAchievement(20);
+	}
+	if(player.pc.gte(10)){
+		getAchievement(21);
+	}
+	if(player.totalData.gte(1e100)){
+		getAchievement(22);
 	}
 	
 	$('#achcount').html(player.achievements.length);

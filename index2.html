@@ -1,7 +1,7 @@
 ﻿<html lang="zh-cn">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader v0.3.1 by loader3229</title>
+<title>Incremental File Loader v0.4 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=true;</script>
 <script src="js/jquery.min.js"></script>
@@ -9,6 +9,7 @@
 <script src="js/window.js"></script>
 <script src="js/break_eternity.js"></script>
 <script src="js/NumberFormating.js"></script>
+<script src="js/os.js"></script>
 <script src="js/game.js"></script>
 <script src="js/achievements.js"></script>
 <script src="js/save.js"></script>
@@ -16,8 +17,8 @@
 <meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader v0.3.1 by loader3229 | <span id="data2">0b</span> 数据</span>
-<span id="ach" style="opacity:0;"></span>
+<span id="gametitle">Incremental File Loader v0.4 by loader3229 | <span id="data2">0b</span> 数据</span>
+<span id="ach1"><span id="ach" style="opacity:0;"></span> | <a href="javascript:show_window('about');" style="color:#ffffff;">关于/捐赠</a></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
 <img src="images/exe.png">
@@ -40,6 +41,12 @@
 <div id="p7a" class="progress_bar"><div id="p7" class="progress_bar1"></div></div>
 <img src="images/exe.png">
 <div class="text">shop.exe</div>
+</div>
+
+<div id="os_upgrader_exe" class="file" onclick="show_os_upgrader();">
+<div id="p9a" class="progress_bar"><div id="p9" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">os_upgrader.exe</div>
 </div>
 
 
@@ -111,12 +118,28 @@
 <div id="cnt8" class="cnt">0</div>
 </div>
 
+<div id="file10" class="file" onclick="loadFile(10);">
+<div id="p10a" class="progress_bar"><div id="p10" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">adder_loader.exe</div>
+<div id="cnt10" class="cnt">0</div>
+</div>
+
+<div id="file11" class="file" onclick="loadFile(11);">
+<div id="p11a" class="progress_bar"><div id="p11" class="progress_bar1"></div></div>
+<img src="images/exe.png">
+<div class="text">multiplier_loader.exe</div>
+<div id="cnt11" class="cnt">0</div>
+</div>
+
 <hr>
 <span id="data_generator_effect"></span>
 <span id="adder_effect"></span>
 <span id="multiplier_effect"></span>
 <span id="producer_effect"></span>
 <span id="file8_effect"></span>
+<span id="file10_effect"></span>
+<span id="file11_effect"></span>
 </div>
 </div>
 
@@ -161,6 +184,16 @@ CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></
 您拥有<span id="pc1"></span>台买过来的计算机，文件加载器速度、数据和文件点数的获取变为原来的<span id="pc2"></span>倍。<br>
 购买新的计算机将会进行格式化重置，并且重置格式化点数和所有升级。<br>
 <a href="javascript:buypc();" id="buypc"></a>
+</div>
+</div>
+
+<div id="oswindow" class="window">
+<div class="close" onclick="hide_window('oswindow');">X</div>
+<div class="inner">
+<h2>你正在使用的操作系统：<span id="os1">0</span></h2>
+<hr>
+升级操作系统将会进行格式化重置。<br>
+<a href="javascript:osupg();" id="osupg"></a>
 </div>
 </div>
 

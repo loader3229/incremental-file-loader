@@ -4,6 +4,7 @@ function getLoaderSpeed(){
 	a=a.mul(getAchievementBonus());
 	a=a.mul(getUpgradeEffect(0));
 	a=a.mul(getPcBonus());
+	a=a.mul(getOSFlatBonus());
 	if((sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a'))a = a.mul(1.5);
 	return a;
 }
@@ -37,6 +38,14 @@ function show_shop(){
 		show_window('shop');
 	}else{
 		loadFile(7);
+	}
+}
+
+function show_os_upgrader(){
+	if(getLoadedFiles(9).gte(1)){
+		show_window('oswindow');
+	}else{
+		loadFile(9);
 	}
 }
 
@@ -118,11 +127,13 @@ function bcUpgrade(a){
 	}
 }
 
-function format_reset(){
-	if(formatPointGain().gte(1)){
+function format_reset(a){
+	if(formatPointGain().gte(1) || a){
 		player.formatPoints=player.formatPoints.add(formatPointGain());
 		player.totalFormatPoints=player.totalFormatPoints.add(formatPointGain());
-		if(player.formatTime<player.bestFormatTime)player.bestFormatTime=player.formatTime;
+		if(formatPointGain().gte(1)){
+			if(player.formatTime<player.bestFormatTime)player.bestFormatTime=player.formatTime;
+		}
 		player.loading=-1;
 		player.formatTime=0;
 		player.formatCount++;
@@ -132,6 +143,8 @@ function format_reset(){
 		player.loaded_files[4]=new Decimal(0);
 		player.loaded_files[6]=new Decimal(0);
 		player.loaded_files[8]=new Decimal(0);
+		player.loaded_files[10]=new Decimal(0);
+		player.loaded_files[11]=new Decimal(0);
 	}
 }
 
@@ -147,9 +160,10 @@ function metaAch2Eff(){
 }
 
 function dataGain(){
-	let a=getLoadedFiles(1).floor().div(10).mul(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getLoadedFiles(4).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getUpgradeEffect(1));
+	let a=getLoadedFiles(1).floor().div(player.os.gte(2)?1:10).mul(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getLoadedFiles(4).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getUpgradeEffect(1));
 	if(hasAchievement(15))a=a.mul(getAchievementBonus());
 	a=a.mul(getPcBonus());
+	a=a.mul(getOSFlatBonus());
 	if((sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a'))a = a.mul(1.5);
 	return a;
 }
@@ -161,6 +175,7 @@ function formatPointGain(){
 	if(hasAchievement(14))a=a.mul(2);
 	if(hasAchievement(17))a=a.mul(2.5);
 	if(hasAchievement(16))a=a.mul(getAchievementBonus());
+	if(player.os.gte(7))a=a.mul(getPcBonus());
 	a=a.floor();
 	return a;
 }
@@ -182,20 +197,22 @@ function realBitcoinGain(){
 }
 
 function fileEffect(a){
-	if(a==8)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff())).mul(hasAchievement(16)?getAchievementBonus():1);
+	if(a==8)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff())).mul(hasAchievement(16)?getAchievementBonus():1).mul(player.os.gte(4)?getPcBonus():1);
+	if(a==10)return getLoadedFiles(a).floor().mul(player.data.add(10).log10()).mul(player.os.gte(6)?getPcBonus():1);
+	if(a==11)return getLoadedFiles(a).floor().mul(player.data.add(10).log10()).mul(player.os.gte(6)?getPcBonus():1);
 }
 
 function getPcReq(){
-	return Decimal.pow(1.5,player.pc).mul(20000);
+	return Decimal.pow(1.5,player.pc).mul(hasAchievement(22)?10000:20000);
 }
 
 function getPcBonus(){
-	return player.pc.add(1);
+	return player.pc.add(1).pow(player.os.gte(5)?2:player.os.gte(1)?1.5:1);
 }
 
 function buypc(){
 	if(player.bitcoin.gte(getPcReq())){
-		format_reset();
+		format_reset(true);
 		player.upgrades=[];
 		player.formatPoints=new Decimal(0);
 		player.formatUpgrades=[];
@@ -204,7 +221,7 @@ function buypc(){
 	}
 }
 
-var LENGTH=[5,5,5,50,100,500,1e3,4e3,100];
+var LENGTH=[5,5,5,50,100,500,1e3,4e3,100,1e16,100,100];
 var tick=Date.now();
 var devSpeed=1;
 function update(){
@@ -226,6 +243,16 @@ function update(){
 	if(hasAchievement(13)){
 		player.loaded_files[1]=getLoadedFiles(1).add(fileEffect(8).mul(diff));
 	}
+	if(player.os.gte(2)){
+		player.loaded_files[3]=getLoadedFiles(3).add(fileEffect(10).mul(diff));
+	}
+	if(player.os.gte(3)){
+		player.loaded_files[4]=getLoadedFiles(4).add(fileEffect(11).mul(diff));
+	}
+	if(player.os.gte(9)){
+		player.formatPoints=player.formatPoints.add(formatPointGain().mul(diff));
+		player.totalFormatPoints=player.totalFormatPoints.add(formatPointGain().mul(diff));
+	}
 	
 	player.bitcoin=player.bitcoin.add(gain);
 	player.totalBitcoin=player.totalBitcoin.add(gain);
@@ -234,12 +261,15 @@ function update(){
 		player.loaded_files[player.loading]=getLoadedFiles(player.loading).add((getLoaderSpeed()).mul(diff).div(LENGTH[player.loading]));
 	}
 	
-	for(var i=0;i<=8;i++){
+	for(var i=0;i<=11;i++){
 		$("#p"+i).width(getLoadedFiles(i).sub(Decimal.floor(getLoadedFiles(i))).mul(100).toNumber()+"%");
 		if(player.loading==i)$("#p"+i+"a").addClass("active");
 		else $("#p"+i+"a").removeClass("active");
-		if(i==1||i==3||i==4||i==6||i==8){
+		if(i==1||i==3||i==4||i==6||i==8||i==10||i==11){
 			$("#cnt"+i).html(formatWhole(getLoadedFiles(i).floor()));
+			$("#p"+i+"a")[getLoadedFiles(i).gte(4503599627370496)?"addClass":"removeClass"]("super_speed");
+		}else{
+			$("#p"+i+"a").css("display",getLoadedFiles(i).gte(1)?"none":"");
 		}
 	}
 	
@@ -259,17 +289,13 @@ function update(){
 	
 	$("#speed").html(format(getLoaderSpeed()));
 	
-	if(player.loading==0 || player.loading==2 || player.loading==5 || player.loading==7){
+	if(player.loading==0 || player.loading==2 || player.loading==5 || player.loading==7 || player.loading==9){
 		if(player.loaded_files[player.loading].gte(1)){
 			player.loaded_files[player.loading]=new Decimal(1);
 			player.loading=-1;
 		}
 	}
 	
-	$("#p0a").css("display",getLoadedFiles(0).gte(1)?"none":"");
-	$("#p2a").css("display",getLoadedFiles(2).gte(1)?"none":"");
-	$("#p5a").css("display",getLoadedFiles(5).gte(1)?"none":"");
-	$("#p7a").css("display",getLoadedFiles(7).gte(1)?"none":"");
 	$("#upgrades_exe").css("display",hasAchievement(0)?"":"none");
 	$("#adder_exe").css("display",hasAchievement(1)?"":"none");
 	$("#multiplier_exe").css("display",hasAchievement(2)?"":"none");
@@ -282,17 +308,25 @@ function update(){
 	$("#upgrade3").css("display",hasAchievement(11)?"":"none");
 	$("#bcu3").css("display",hasAchievement(12)?"":"none");
 	$("#file8").css("display",hasAchievement(13)?"":"none");
+	$("#file10").css("display",player.os.gte(2)?"":"none");
+	$("#file11").css("display",player.os.gte(3)?"":"none");
+	$("#os_upgrader_exe").css("display",hasAchievement(21)?"":"none");
 	
 	$("#adder_effect").css("display",hasAchievement(1)?"":"none");
 	$("#multiplier_effect").css("display",hasAchievement(2)?"":"none");
 	$("#producer_effect").css("display",hasAchievement(5)?"":"none");
+	$("#file8_effect").css("display",hasAchievement(13)?"":"none");
+	$("#file10_effect").css("display",player.os.gte(2)?"":"none");
+	$("#file11_effect").css("display",player.os.gte(3)?"":"none");
 	
 	$("#data_generator_effect").html("data_generator.exe: +"+formatData2(dataGain())+(zhMode?" 数据/秒":" Data/s")+"<br>");
-	$("#adder_effect").html("adder.exe: +"+formatData2(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).div(10))+(zhMode?" data_generator.exe的基本数据/秒":" Base Data/s to data_generator.exe")+"<br>");
+	$("#adder_effect").html("adder.exe: +"+formatData2(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).div(player.os.gte(2)?1:10))+(zhMode?" data_generator.exe的基本数据/秒":" Base Data/s to data_generator.exe")+"<br>");
 	$("#multiplier_effect").html("multiplier.exe: *"+format(getLoadedFiles(4).floor().pow(metaAch1Eff()).mul(1).add(1))+(zhMode?" data_generator.exe的速度":" to data_generator.exe")+"<br>");
 	$("#producer_effect").html("producer.exe: +"+format(realBitcoinGain(),4)+(zhMode?" 文件点数/秒（基础：":" Bitcoin/sec (Base:")+format(bitcoinGain(),4)+(zhMode?" 文件点数/秒，基于数据）":" Bitcoin/sec based on data)")+"<br>");
-	$("#file8_effect").html("data_generator_loader.exe: "+(zhMode?"每秒加载":"Load data_generator.exe ")+format(fileEffect(8))+(zhMode?"次data_generator.exe（基于数据）":" times per second")+"<br>");
+	$("#file8_effect").html("data_generator_loader.exe: "+(zhMode?"每秒加载":"Load data_generator.exe ")+format(fileEffect(8))+(zhMode?"次data_generator.exe（基于数据）":" times per second (based on data)")+"<br>");
 	$("#format_reset_link").html((zhMode?"格式化以得到":"Format for ")+formatWhole(formatPointGain())+(zhMode?"格式化点数":" Format Points")+"<br>");
+	$("#file10_effect").html("adder_loader.exe: "+(zhMode?"每秒加载":"Load adder.exe ")+format(fileEffect(10))+(zhMode?"次adder.exe（基于数据）":" times per second (based on data)")+"<br>");
+	$("#file11_effect").html("multiplier_loader.exe: "+(zhMode?"每秒加载":"Load multiplier.exe ")+format(fileEffect(11))+(zhMode?"次multiplier.exe（基于数据）":" times per second (based on data)")+"<br>");
 	
 	if(player.formatCount>=1){
 		$("#format_stat").css("display","");
@@ -325,7 +359,9 @@ function update(){
 	
 	$("#pc1").html(formatWhole(player.pc));
 	$("#pc2").html(format(getPcBonus()));
+	$("#os1").html(getOSName());
 	$("#buypc").html((zhMode?"购买新的计算机（":"Buy a new PC (")+format(getPcReq())+(zhMode?"文件点数）":" Bitcoins)"));
+	$("#osupg").html((zhMode?"升级到":"Upgrade to ")+getNextOSName()+(zhMode?"，需要":", requires ")+formatData(getOSUpgradeCost())+(zhMode?"数据。在":" data. At ")+getNextOSName2()+(zhMode?"，"+getNextOSBonusZH():", "+getNextOSBonus()));
 	checkAchievements();
 }
 

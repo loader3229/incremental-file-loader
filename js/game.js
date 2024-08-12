@@ -314,7 +314,7 @@ function update(){
 	$("#producer_exe").css("display",hasAchievement(5)?"":"none");
 	$("#shop_exe").css("display",hasAchievement(6)?"":"none");
 	$("#upgrade2").css("display",hasAchievement(7)?"":"none");
-	$("#bcu2").css("display",hasAchievement(7)?"":"none");
+	$("#bcu2").css("display",hasAchievement(8)?"":"none");
 	$("#upgrade3").css("display",hasAchievement(11)?"":"none");
 	$("#bcu3").css("display",hasAchievement(12)?"":"none");
 	$("#file8").css("display",hasAchievement(13)?"":"none");

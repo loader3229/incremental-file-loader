@@ -167,6 +167,6 @@ function checkAchievements(){
 	$('#achbonus').html(format(getAchievementBonus()));
 	
 	for(var i in player.achievements){
-		$("#achievement"+i).addClass('achievementdone');
+		$("#achievement"+player.achievements[i]).addClass('achievementdone');
 	}
 }

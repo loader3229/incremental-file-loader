@@ -22,6 +22,11 @@ var ACHIEVEMENTS=[
 	["Meta-Achievement II","Have 20 Achievements.","data_generator_loader.exe and producer.exe are better based on achievements","元-成就 II","拥有20个成就。","根据成就数量，data_generator_loader.exe和producer.exe的公式变得更好"],
 	["DecaSpeed","Buy 10 new PCs.","Unlock os_upgrader.exe","十倍速度","购买10台新的计算机。","解锁os_upgrader.exe"],
 	["Googol!","Produce a total of 1e100B data.","Divide PC price by 2","古戈尔！","总计生产1e100B数据。","购买计算机的花费除以2。"],
+	["Minor Version","Reach OS version 10.1","Achievement Bonus boost adder_loader.exe and multiplier_loader.exe","小版本号","操作系统版本号达到10.1。","成就加成对adder_loader.exe和multiplier_loader.exe生效"],
+	["Googol^2","Produce a total of 1e200B data.","adder_loader.exe and multiplier_loader.exe are better based on achievements","古戈尔的平方","总计生产1e200B数据。","根据成就数量，adder_loader.exe和multiplier_loader.exe的公式变得更好"],
+	["A Small Group","Buy 35 new PCs.","Reduce data requirement for OS","小团体","购买35台新的计算机。","减少操作系统升级所需数据。"],
+	["That's FASTER!","Reach Level 500 File Loader.","Divide PC price by 10","这更快了！","将文件加载器升级到500级","购买计算机的花费除以10。"],
+	["Half of a hundred PCs","Buy 50 new PCs.","Reduce data requirement for OS","一百台计算机的一半","购买50台新的计算机。","减少操作系统升级所需数据。"],
 ]
 
 function init_achievements(){
@@ -141,6 +146,21 @@ function checkAchievements(){
 	}
 	if(player.totalData.gte(1e100)){
 		getAchievement(22);
+	}
+	if(player.os.gte(10)){
+		getAchievement(23);
+	}
+	if(player.totalData.gte(1e200)){
+		getAchievement(24);
+	}
+	if(player.pc.gte(35)){
+		getAchievement(25);
+	}
+	if(getUpgradeLevel(0).add(getFormatUpgradeLevel(0)).add(getBcUpgradeLevel(0)).gte(499)){
+		getAchievement(26);
+	}
+	if(player.pc.gte(50)){
+		getAchievement(27);
 	}
 	
 	$('#achcount').html(player.achievements.length);

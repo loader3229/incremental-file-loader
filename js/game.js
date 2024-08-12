@@ -79,10 +79,10 @@ function getBcUpgradeLevel(a){
 
 function getUpgradeCost(a){
 	if(a==0)return Decimal.pow(2,getUpgradeLevel(a).pow(1.2));
-	if(a==1)return Decimal.pow(2,getUpgradeLevel(a).mul(2).add(10));
-	if(a==2 && hasAchievement(19))return Decimal.pow(1.9,Decimal.pow(1.9,getUpgradeLevel(a)));
+	if(a==1)return Decimal.pow(2,getUpgradeLevel(a).mul(2).add(player.os.gte(17)?0:10));
+	if(a==2 && hasAchievement(19))return Decimal.pow(player.os.gte(17)?1.5:1.9,Decimal.pow(player.os.gte(17)?1.5:1.9,getUpgradeLevel(a)));
 	if(a==2)return Decimal.pow(2,Decimal.pow(2,getUpgradeLevel(a).add(5)));
-	if(a==3)return Decimal.pow(10,Decimal.pow(1.1,getUpgradeLevel(a).pow(2)).mul(30));
+	if(a==3)return Decimal.pow(10,Decimal.pow(player.os.gte(17)?1.05:1.1,getUpgradeLevel(a).pow(2)).mul(player.os.gte(17)?1:30));
 }
 
 function getUpgradeEffect(a){
@@ -94,9 +94,9 @@ function getUpgradeEffect(a){
 
 function getFormatUpgradeCost(a){
 	if(a==0)return Decimal.pow(2,getFormatUpgradeLevel(a));
-	if(a==1)return Decimal.pow(3,getFormatUpgradeLevel(a));
-	if(a==2)return Decimal.pow(4,getFormatUpgradeLevel(a).add(13));
-	if(a==3)return Decimal.pow(5,getFormatUpgradeLevel(a).pow(1.5)).mul(1e10);
+	if(a==1)return Decimal.pow(player.os.gte(27)?2:3,getFormatUpgradeLevel(a));
+	if(a==2)return Decimal.pow(4,getFormatUpgradeLevel(a).add(player.os.gte(15)?0:13));
+	if(a==3)return Decimal.pow(5,getFormatUpgradeLevel(a).pow(1.5)).mul(player.os.gte(15)?1:1e10);
 }
 
 function getBcUpgradeCost(a){
@@ -159,6 +159,11 @@ function metaAch2Eff(){
 	return player.achievements.length/20;
 }
 
+function metaAch2Eff2(){
+	if(player.achievements.length<=20||!hasAchievement(24))return 1;
+	return player.achievements.length/20;
+}
+
 function dataGain(){
 	let a=getLoadedFiles(1).floor().div(player.os.gte(2)?1:10).mul(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getLoadedFiles(4).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getUpgradeEffect(1));
 	if(hasAchievement(15))a=a.mul(getAchievementBonus());
@@ -169,7 +174,7 @@ function dataGain(){
 }
 
 function formatPointGain(){
-	let a=player.data.add(1).max(1).log(2).div(20).pow(15);
+	let a=player.data.add(1).max(1).log(2).div(player.os.gte(19)?10:20).pow(15);
 	a=a.mul(getUpgradeEffect(2));
 	if(hasAchievement(9))a=a.mul(2);
 	if(hasAchievement(14))a=a.mul(2);
@@ -197,17 +202,17 @@ function realBitcoinGain(){
 }
 
 function fileEffect(a){
-	if(a==8)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff())).mul(hasAchievement(16)?getAchievementBonus():1).mul(player.os.gte(4)?getPcBonus():1);
-	if(a==10)return getLoadedFiles(a).floor().mul(player.data.add(10).log10()).mul(player.os.gte(6)?getPcBonus():1);
-	if(a==11)return getLoadedFiles(a).floor().mul(player.data.add(10).log10()).mul(player.os.gte(6)?getPcBonus():1);
+	if(a==8)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff())).mul(hasAchievement(16)?getAchievementBonus():1).mul(player.os.gte(4)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
+	if(a==10)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff2())).mul(hasAchievement(23)?getAchievementBonus():1).mul(player.os.gte(6)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
+	if(a==11)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff2())).mul(hasAchievement(23)?getAchievementBonus():1).mul(player.os.gte(6)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
 }
 
 function getPcReq(){
-	return Decimal.pow(1.5,player.pc).mul(hasAchievement(22)?10000:20000);
+	return Decimal.pow(1.5,player.pc).mul(hasAchievement(26)?1000:hasAchievement(22)?10000:20000).div(player.os.gte(23)?10:1);
 }
 
 function getPcBonus(){
-	return player.pc.add(1).pow(player.os.gte(5)?2:player.os.gte(1)?1.5:1);
+	return player.pc.add(1).pow(player.os.gte(11)?3:player.os.gte(5)?2:player.os.gte(1)?1.5:1);
 }
 
 function buypc(){
@@ -222,6 +227,11 @@ function buypc(){
 }
 
 var LENGTH=[5,5,5,50,100,500,1e3,4e3,100,1e16,100,100];
+
+function getLength(a){
+	if(a<12 && player.os.gte(25))return 1;
+	return LENGTH[a];
+}
 var tick=Date.now();
 var devSpeed=1;
 function update(){
@@ -258,7 +268,7 @@ function update(){
 	player.totalBitcoin=player.totalBitcoin.add(gain);
 	
 	if(player.loading>=0){
-		player.loaded_files[player.loading]=getLoadedFiles(player.loading).add((getLoaderSpeed()).mul(diff).div(LENGTH[player.loading]));
+		player.loaded_files[player.loading]=getLoadedFiles(player.loading).add((getLoaderSpeed()).mul(diff).div(getLength(player.loading)));
 	}
 	
 	for(var i=0;i<=11;i++){

@@ -77,14 +77,6 @@ function getBcUpgradeLevel(a){
 	return player.bcUpgrades[a];
 }
 
-function getUpgradeCost(a){
-	if(a==0)return Decimal.pow(2,getUpgradeLevel(a).pow(1.2));
-	if(a==1)return Decimal.pow(2,getUpgradeLevel(a).mul(2).add(player.os.gte(17)?0:10));
-	if(a==2 && hasAchievement(19))return Decimal.pow(player.os.gte(17)?1.5:1.9,Decimal.pow(player.os.gte(17)?1.5:1.9,getUpgradeLevel(a)));
-	if(a==2)return Decimal.pow(2,Decimal.pow(2,getUpgradeLevel(a).add(5)));
-	if(a==3)return Decimal.pow(10,Decimal.pow(player.os.gte(17)?1.05:1.1,getUpgradeLevel(a).pow(2)).mul(player.os.gte(17)?1:30));
-}
-
 function getUpgradeEffect(a){
 	if(a==0)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)).pow(0.8));
 	if(a==1)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)));
@@ -92,18 +84,51 @@ function getUpgradeEffect(a){
 	if(a==3)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)));
 }
 
-function getFormatUpgradeCost(a){
-	if(a==0)return Decimal.pow(2,getFormatUpgradeLevel(a));
-	if(a==1)return Decimal.pow(player.os.gte(27)?2:3,getFormatUpgradeLevel(a));
-	if(a==2)return Decimal.pow(4,getFormatUpgradeLevel(a).add(player.os.gte(15)?0:13));
-	if(a==3)return Decimal.pow(5,getFormatUpgradeLevel(a).pow(1.5)).mul(player.os.gte(15)?1:1e10);
+function getUpgradeCost(a,x){
+	if(x===undefined)x=getUpgradeLevel(a);
+	x=new Decimal(x);
+	if(a==0)return Decimal.pow(2,x.pow(1.2));
+	if(a==1)return Decimal.pow(2,x.mul(2).add(player.os.gte(17)?0:10));
+	if(a==2 && hasAchievement(19))return Decimal.pow(player.os.gte(17)?1.5:1.9,Decimal.pow(player.os.gte(17)?1.5:1.9,x));
+	if(a==2)return Decimal.pow(2,Decimal.pow(2,x.add(5)));
+	if(a==3)return Decimal.pow(10,Decimal.pow(player.os.gte(17)?1.05:1.1,x.pow(2)).mul(player.os.gte(17)?1:30));
 }
 
-function getBcUpgradeCost(a){
-	if(a==0)return Decimal.pow(5,getBcUpgradeLevel(a));
-	if(a==1)return Decimal.pow(3,getBcUpgradeLevel(a).add(1));
-	if(a==2)return Decimal.pow(2,getBcUpgradeLevel(a).add(2)).mul(25);
-	if(a==3)return Decimal.pow(4,getBcUpgradeLevel(a).add(3));
+function getFormatUpgradeCost(a,x){
+	if(x===undefined)x=getFormatUpgradeLevel(a);
+	x=new Decimal(x);
+	if(a==0)return Decimal.pow(2,x);
+	if(a==1)return Decimal.pow(player.os.gte(27)?2:3,x);
+	if(a==2)return Decimal.pow(4,x.add(player.os.gte(15)?0:13));
+	if(a==3)return Decimal.pow(5,x.pow(1.5)).mul(player.os.gte(15)?1:1e10);
+}
+
+function getBcUpgradeCost(a,x){
+	if(x===undefined)x=getBcUpgradeLevel(a);
+	x=new Decimal(x);
+	if(a==0)return Decimal.pow(5,x);
+	if(a==1)return Decimal.pow(3,x.add(1));
+	if(a==2)return Decimal.pow(2,x.add(2)).mul(25);
+	if(a==3)return Decimal.pow(4,x.add(3));
+}
+
+function getUpgradeBulk(a,x){
+	if(x===undefined)x=player.data;
+	x=new Decimal(x);
+	if(a==0)return x.max(0.1).log(2).pow(1/1.2).add(1).floor().max(0);
+	if(a==1)return x.max(0.1).log(2).sub(player.os.gte(17)?0:10).div(2).add(1).floor().max(0);
+	if(a==2 && hasAchievement(19))return x.max(0.1).log(player.os.gte(17)?1.5:1.9).max(0.1).log(player.os.gte(17)?1.5:1.9).add(1).floor().max(0);
+	if(a==2)return x.max(0.1).log(2).max(0.1).log(2).sub(5).add(1).floor().max(0);
+	if(a==3)return x.max(0.1).log(10).div(player.os.gte(17)?1:30).max(0.1).log(player.os.gte(17)?1.05:1.1).pow(0.5).add(1).floor().max(0);
+}
+
+function getFormatUpgradeBulk(a,x){
+	if(x===undefined)x=player.formatPoints;
+	x=new Decimal(x);
+	if(a==0)return x.max(0.1).log(2).add(1).floor().max(0);
+	if(a==1)return x.max(0.1).log(player.os.gte(27)?2:3).add(1).floor().max(0);
+	if(a==2)return x.max(0.1).log(4).sub(player.os.gte(15)?0:13).add(1).floor().max(0);
+	if(a==3)return x.div(player.os.gte(15)?1:1e10).max(0.1).log(5).pow(1/1.5).add(1).floor().max(0);
 }
 
 function upgrade(a){
@@ -117,6 +142,19 @@ function formatUpgrade(a){
 	if(player.formatPoints.gte(getFormatUpgradeCost(a))){
 		player.formatPoints=player.formatPoints.sub(getFormatUpgradeCost(a));
 		player.formatUpgrades[a]=getFormatUpgradeLevel(a).add(1);
+	}
+}
+
+function buyMaxUpgrade1(a){
+	if(player.data.gte(getUpgradeCost(a))){
+		var b=getUpgradeBulk(a);
+		player.data=player.data.sub(getUpgradeCost(a,b.sub(1)));
+		player.upgrades[a]=b;
+	}
+	if(player.formatPoints.gte(getFormatUpgradeCost(a))){
+		var b=getFormatUpgradeBulk(a);
+		player.formatPoints=player.formatPoints.sub(getFormatUpgradeCost(a,b.sub(1)));
+		player.formatUpgrades[a]=b;
 	}
 }
 

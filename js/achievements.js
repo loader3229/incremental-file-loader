@@ -27,6 +27,9 @@ var ACHIEVEMENTS=[
 	["A Small Group","Buy 35 new PCs.","Reduce data requirement for OS","小团体","购买35台新的计算机。","减少操作系统升级所需数据。"],
 	["That's FASTER!","Reach Level 500 File Loader.","Divide PC price by 10","这更快了！","将文件加载器升级到500级","购买计算机的花费除以10。"],
 	["Half of a hundred PCs","Buy 50 new PCs.","Reduce data requirement for OS","一百台计算机的一半","购买50台新的计算机。","减少操作系统升级所需数据。"],
+	["To Infinity!","Go Infinity.","10x data","达到无限！","进行无限重置。","10倍数据获取"],
+	["To Fast Infinity!","Go Infinity within 1 hour.","Data Upgrades don't cost data","达到较快的无限！","1小时内无限。","数据升级不再花费数据"],
+	["To Faster Infinity!","Go Infinity within 10 minutes.","Format Upgrades don't cost format points","达到较快的无限！","1小时内无限。","格式化升级不再花费格式化点数"],
 ]
 
 function init_achievements(){
@@ -90,7 +93,7 @@ function checkAchievements(){
 	if(player.totalData.gte(2**20)){
 		getAchievement(3);
 	}
-	if(player.formatCount>=1){
+	if(player.formatCount.gte(1)){
 		getAchievement(4);
 	}
 	if(player.totalData.gte(2**32)){
@@ -161,6 +164,15 @@ function checkAchievements(){
 	}
 	if(player.pc.gte(50)){
 		getAchievement(27);
+	}
+	if(player.infinity.count.gte(1)){
+		getAchievement(28);
+	}
+	if(player.infinity.bestTime<=3600){
+		getAchievement(29);
+	}
+	if(player.infinity.bestTime<=600){
+		getAchievement(30);
 	}
 	
 	$('#achcount').html(player.achievements.length);

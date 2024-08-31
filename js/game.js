@@ -1,10 +1,10 @@
-﻿
-function getLoaderSpeed(){
+﻿function getLoaderSpeed(){
 	let a=new Decimal(1);
 	a=a.mul(getAchievementBonus());
 	a=a.mul(getUpgradeEffect(0));
 	a=a.mul(getPcBonus());
 	a=a.mul(getOSFlatBonus());
+	if(hasInfinityOneUpgrade(0,0))a=a.mul(player.infinity.count.add(1));
 	if((sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a'))a = a.mul(1.5);
 	return a;
 }
@@ -78,7 +78,7 @@ function getBcUpgradeLevel(a){
 }
 
 function getUpgradeEffect(a){
-	if(a==0)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)).pow(0.8));
+	if(a==0)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)).pow(0.8).div(hasInfinityOneUpgrade(2,1)?1.3:hasInfinityOneUpgrade(2,0)?1.1:1));
 	if(a==1)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)));
 	if(a==2)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)));
 	if(a==3)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)));
@@ -133,14 +133,14 @@ function getFormatUpgradeBulk(a,x){
 
 function upgrade(a){
 	if(player.data.gte(getUpgradeCost(a))){
-		player.data=player.data.sub(getUpgradeCost(a));
+		if(!hasAchievement(29))player.data=player.data.sub(getUpgradeCost(a));
 		player.upgrades[a]=getUpgradeLevel(a).add(1);
 	}
 }
 
 function formatUpgrade(a){
 	if(player.formatPoints.gte(getFormatUpgradeCost(a))){
-		player.formatPoints=player.formatPoints.sub(getFormatUpgradeCost(a));
+		if(!hasAchievement(30))player.formatPoints=player.formatPoints.sub(getFormatUpgradeCost(a));
 		player.formatUpgrades[a]=getFormatUpgradeLevel(a).add(1);
 	}
 }
@@ -148,12 +148,12 @@ function formatUpgrade(a){
 function buyMaxUpgrade1(a){
 	if(player.data.gte(getUpgradeCost(a))){
 		var b=getUpgradeBulk(a);
-		player.data=player.data.sub(getUpgradeCost(a,b.sub(1)));
+		if(!hasAchievement(29))player.data=player.data.sub(getUpgradeCost(a,b.sub(1)));
 		player.upgrades[a]=b;
 	}
 	if(player.formatPoints.gte(getFormatUpgradeCost(a))){
 		var b=getFormatUpgradeBulk(a);
-		player.formatPoints=player.formatPoints.sub(getFormatUpgradeCost(a,b.sub(1)));
+		if(!hasAchievement(30))player.formatPoints=player.formatPoints.sub(getFormatUpgradeCost(a,b.sub(1)));
 		player.formatUpgrades[a]=b;
 	}
 }
@@ -171,10 +171,10 @@ function format_reset(a){
 		player.totalFormatPoints=player.totalFormatPoints.add(formatPointGain());
 		if(formatPointGain().gte(1)){
 			if(player.formatTime<player.bestFormatTime)player.bestFormatTime=player.formatTime;
+			player.formatCount=player.formatCount.add(1);
 		}
 		player.loading=-1;
 		player.formatTime=0;
-		player.formatCount++;
 		player.data=new Decimal(0);
 		player.loaded_files[1]=new Decimal(0);
 		player.loaded_files[3]=new Decimal(0);
@@ -203,10 +203,11 @@ function metaAch2Eff2(){
 }
 
 function dataGain(){
-	let a=getLoadedFiles(1).floor().div(player.os.gte(2)?1:10).mul(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getLoadedFiles(4).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getUpgradeEffect(1));
+	let a=getLoadedFiles(1).pow(getFilePower()).floor().div(player.os.gte(2)?1:10).mul(getLoadedFiles(3).pow(getFilePower()).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getLoadedFiles(4).pow(getFilePower()).floor().pow(metaAch1Eff()).mul(1).add(1)).mul(getUpgradeEffect(1));
 	if(hasAchievement(15))a=a.mul(getAchievementBonus());
 	a=a.mul(getPcBonus());
 	a=a.mul(getOSFlatBonus());
+	if(hasAchievement(28))a=a.mul(10);
 	if((sha512_256(localStorage.supporterCode+"loader3229").slice(2) == '97b4061c3a44e2950549613ba148eff34250441a9b3121698a15fcefdb4f5a'))a = a.mul(1.5);
 	return a;
 }
@@ -219,18 +220,20 @@ function formatPointGain(){
 	if(hasAchievement(17))a=a.mul(2.5);
 	if(hasAchievement(16))a=a.mul(getAchievementBonus());
 	if(player.os.gte(7))a=a.mul(getPcBonus());
+	if(hasInfinityOneUpgrade(1,0))a=a.mul(player.formatCount.add(1));
 	a=a.floor();
 	return a;
 }
 
 function bitcoinGain(){
-	let a=player.data.add(1).max(1).log10().pow(metaAch2Eff()).mul(getLoadedFiles(6).floor().add(1).max(1).log10().pow(2)).div(100);
+	let a=player.data.add(1).max(1).log10().pow(metaAch2Eff()).mul(getLoadedFiles(6).pow(getFilePower()).floor().add(1).max(1).log10().pow(2)).div(100);
 	if(hasAchievement(9))a=a.mul(2);
 	if(hasAchievement(14))a=a.mul(2);
 	if(hasAchievement(18))a=a.mul(2.5);
 	if(hasAchievement(15))a=a.mul(getAchievementBonus());
 	a=a.mul(getUpgradeEffect(3));
 	a=a.mul(getPcBonus());
+	a=a.mul(getOSFlatBonus2());
 	return a;
 }
 
@@ -239,14 +242,20 @@ function realBitcoinGain(){
 	return a;
 }
 
+function getFilePower(){
+	if(hasInfinityOneUpgrade(2,1))return 1.3;
+	if(hasInfinityOneUpgrade(2,0))return 1.1;
+	return 1;
+}
+
 function fileEffect(a){
-	if(a==8)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff())).mul(hasAchievement(16)?getAchievementBonus():1).mul(player.os.gte(4)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
-	if(a==10)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff2())).mul(hasAchievement(23)?getAchievementBonus():1).mul(player.os.gte(6)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
-	if(a==11)return getLoadedFiles(a).floor().mul(player.data.add(10).log10().pow(metaAch2Eff2())).mul(hasAchievement(23)?getAchievementBonus():1).mul(player.os.gte(6)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
+	if(a==8)return getLoadedFiles(a).pow(getFilePower()).floor().mul(player.data.add(10).log10().pow(metaAch2Eff())).mul(hasAchievement(16)?getAchievementBonus():1).mul(player.os.gte(4)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
+	if(a==10)return getLoadedFiles(a).pow(getFilePower()).floor().mul(player.data.add(10).log10().pow(metaAch2Eff2())).mul(hasAchievement(23)?getAchievementBonus():1).mul(player.os.gte(6)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
+	if(a==11)return getLoadedFiles(a).pow(getFilePower()).floor().mul(player.data.add(10).log10().pow(metaAch2Eff2())).mul(hasAchievement(23)?getAchievementBonus():1).mul(player.os.gte(6)?getPcBonus():1).mul(player.os.gte(13)?getOSFlatBonus():1);
 }
 
 function getPcReq(){
-	return Decimal.pow(1.5,player.pc).mul(hasAchievement(26)?1000:hasAchievement(22)?10000:20000).div(player.os.gte(23)?10:1);
+	return Decimal.pow(1.5,player.pc).mul(hasAchievement(26)?1000:hasAchievement(22)?10000:20000).div(player.os.gte(35)?100:player.os.gte(23)?10:1);
 }
 
 function getPcBonus(){
@@ -272,14 +281,59 @@ function getLength(a){
 }
 var tick=Date.now();
 var devSpeed=1;
+var offlineSpeed=0;
+
+function freeze_game(a){
+	player.freeze=a;
+}
+
+function adjustSpeed(a){
+	offlineSpeed=a;
+	player.freeze=0;
+}
+
 function update(){
+	player.offline+=(tick-player.lastTick)/1000;
 	var temp=Date.now();
-	var diff=(temp-tick)/1000*devSpeed;
-	tick=temp;
+	var diff=(temp-tick)/1000;
 	
+	if(player.freeze==1){
+		player.offline+=(temp-tick)/1000;
+		diff=0;
+	}
+	
+	if(player.freeze==2 && temp-tick>=20){
+		player.offline+=(temp-tick-20)/1000;
+		diff=0.02;
+	}
+	
+	player.lastTick=tick=temp;
+	
+	$("#gamespeed").html(format(offlineSpeed+1)+"x");
+	if(player.freeze==1)$("#gamespeed").html(zhMode?"已冻结":"Freezed");
+	$("#offline1").html(formatTime(player.offline));
+	$("#offline2").html(formatTime2(player.offline)+(zhMode?[offlineSpeed?"("+(format(offlineSpeed+1)+"x)"):"","（已冻结）"]:[offlineSpeed?"("+(format(offlineSpeed+1)+"x)"):"","(Freezed)"])[player.freeze ?? 0]);
+	
+	if(player.freeze!=1&&player.freeze!=2){
+		if(!isFinite(offlineSpeed))offlineSpeed=0;
+		if(offlineSpeed<=-1){
+			player.offline+=diff;player.freeze=1;return;
+		}else{
+			var offlineCost=diff*offlineSpeed;
+			if(offlineCost>player.offline){
+				offlineCost=player.offline;
+				offlineSpeed=Math.min(offlineSpeed,0);
+			}
+			player.offline-=offlineCost;
+			diff+=offlineCost;
+		}
+	}
+	
+	diff*=devSpeed;
 	
 	player.playTime+=diff;
 	player.formatTime+=diff;
+	player.infinity.currentTime+=diff;
 	
 	var gain=dataGain().mul(diff);
 	player.data=player.data.add(gain);
@@ -344,6 +398,32 @@ function update(){
 		}
 	}
 	
+	var plIndex=[1,3,4,6,8,10,11];
+	for(var i=0;i<player.infinity.passiveLoader;i++){
+		player.loaded_files[plIndex[i]]=getLoadedFiles(plIndex[i]).add((getLoaderSpeed()).mul(diff).div(getLength(plIndex[i])).div(12.5).mul(player.infinity.passiveLoader));
+	}
+	
+	if(hasInfinityOneUpgrade(0,1)){
+		for(var i=0;i<=3;i++){
+			if(player.data.gte(getUpgradeCost(i))){
+				var b=getUpgradeBulk(i);
+				if(!hasAchievement(29))player.data=player.data.sub(getUpgradeCost(i,b.sub(1)));
+				player.upgrades[i]=b;
+			}
+		}
+	}
+	
+	
+	if(hasInfinityOneUpgrade(1,1)){
+		for(var i=0;i<=3;i++){
+			if(player.formatPoints.gte(getFormatUpgradeCost(i))){
+				var b=getFormatUpgradeBulk(i);
+				if(!hasAchievement(30))player.formatPoints=player.formatPoints.sub(getFormatUpgradeCost(i,b.sub(1)));
+				player.formatUpgrades[i]=b;
+			}
+		}
+	}
+	
 	$("#upgrades_exe").css("display",hasAchievement(0)?"":"none");
 	$("#adder_exe").css("display",hasAchievement(1)?"":"none");
 	$("#multiplier_exe").css("display",hasAchievement(2)?"":"none");
@@ -368,15 +448,15 @@ function update(){
 	$("#file11_effect").css("display",player.os.gte(3)?"":"none");
 	
 	$("#data_generator_effect").html("data_generator.exe: +"+formatData2(dataGain())+(zhMode?" 数据/秒":" Data/s")+"<br>");
-	$("#adder_effect").html("adder.exe: +"+formatData2(getLoadedFiles(3).floor().pow(metaAch1Eff()).mul(1).div(player.os.gte(2)?1:10))+(zhMode?" data_generator.exe的基本数据/秒":" Base Data/s to data_generator.exe")+"<br>");
-	$("#multiplier_effect").html("multiplier.exe: *"+format(getLoadedFiles(4).floor().pow(metaAch1Eff()).mul(1).add(1))+(zhMode?" data_generator.exe的速度":" to data_generator.exe")+"<br>");
+	$("#adder_effect").html("adder.exe: +"+formatData2(getLoadedFiles(3).pow(getFilePower()).floor().pow(metaAch1Eff()).mul(1).div(player.os.gte(2)?1:10))+(zhMode?" data_generator.exe的基本数据/秒":" Base Data/s to data_generator.exe")+"<br>");
+	$("#multiplier_effect").html("multiplier.exe: *"+format(getLoadedFiles(4).pow(getFilePower()).floor().pow(metaAch1Eff()).mul(1).add(1))+(zhMode?" data_generator.exe的速度":" to data_generator.exe")+"<br>");
 	$("#producer_effect").html("producer.exe: +"+format(realBitcoinGain(),4)+(zhMode?" 文件点数/秒（基础：":" Bitcoin/sec (Base:")+format(bitcoinGain(),4)+(zhMode?" 文件点数/秒，基于数据）":" Bitcoin/sec based on data)")+"<br>");
 	$("#file8_effect").html("data_generator_loader.exe: "+(zhMode?"每秒加载":"Load data_generator.exe ")+format(fileEffect(8))+(zhMode?"次data_generator.exe（基于数据）":" times per second (based on data)")+"<br>");
 	$("#format_reset_link").html((zhMode?"格式化以得到":"Format for ")+formatWhole(formatPointGain())+(zhMode?"格式化点数":" Format Points")+"<br>");
 	$("#file10_effect").html("adder_loader.exe: "+(zhMode?"每秒加载":"Load adder.exe ")+format(fileEffect(10))+(zhMode?"次adder.exe（基于数据）":" times per second (based on data)")+"<br>");
 	$("#file11_effect").html("multiplier_loader.exe: "+(zhMode?"每秒加载":"Load multiplier.exe ")+format(fileEffect(11))+(zhMode?"次multiplier.exe（基于数据）":" times per second (based on data)")+"<br>");
 	
-	if(player.formatCount>=1){
+	if(player.formatCount.gte(1)){
 		$("#format_stat").css("display","");
 		$("#format_stat1").html(formatWhole(player.totalFormatPoints));
 		$("#format_stat2").html(formatWhole(player.formatCount));
@@ -410,6 +490,8 @@ function update(){
 	$("#os1").html(getOSName());
 	$("#buypc").html((zhMode?"购买新的计算机（":"Buy a new PC (")+format(getPcReq())+(zhMode?"文件点数）":" Bitcoins)"));
 	$("#osupg").html((zhMode?"升级到":"Upgrade to ")+getNextOSName()+(zhMode?"，需要":", requires ")+formatData(getOSUpgradeCost())+(zhMode?"数据。在":" data. At ")+getNextOSName2()+(zhMode?"，"+getNextOSBonusZH():", "+getNextOSBonus()));
+	infinityUpdate();
+	
 	checkAchievements();
 }
 
@@ -419,5 +501,3 @@ function getUpgrade(a){
 	player.upgrades[a]=new Decimal(0);
 	return player.upgrades[a];
 }
-
-setInterval(update,20);

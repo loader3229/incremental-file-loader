@@ -1,14 +1,17 @@
 function getOSName(){
+	if(player.os.gte(29))return "Loadux "+formatWhole(player.os.add(31).div(3).floor())+"."+formatWhole(player.os.add(1).toNumber() % 3);
 	if(player.os.gte(9))return "Loadux "+formatWhole(player.os.add(11).div(2).floor())+"."+formatWhole(player.os.add(1).toNumber() % 2);
 	return "Loadux "+formatWhole(player.os.add(1))+".0";
 }
 
 function getNextOSName(){
+	if(player.os.gte(29))return "Loadux "+formatWhole(player.os.add(32).div(3).floor())+"."+formatWhole(player.os.add(2).toNumber() % 3);
 	if(player.os.gte(9))return "Loadux "+formatWhole(player.os.add(12).div(2).floor())+"."+formatWhole(player.os.toNumber() % 2);
 	return "Loadux "+formatWhole(player.os.add(2))+".0";
 }
 
 function getNextOSName2(){
+	if(player.os.gte(29))return "Loadux "+formatWhole(player.os.add(37).div(6).floor().mul(2))+".0";
 	if(player.os.gte(9))return "Loadux "+formatWhole(player.os.add(13).div(2).floor())+".0";
 	return "Loadux "+formatWhole(player.os.add(2))+".0";
 }
@@ -32,7 +35,9 @@ function getNextOSBonus(){
 	if(player.os.lt(23))return "Divide PC price by 10";
 	if(player.os.lt(25))return "Reduce file loading time before Infinity layer.";
 	if(player.os.lt(27))return "Format Point cost of Upgrade 2 is cheaper";
-	if(player.os.lt(29))return "Unlock Infinity (TBD)";
+	if(player.os.lt(29))return "Unlock Infinity";
+	if(player.os.lt(35))return "Divide PC price by 10";
+	if(player.os.lt(41))return "Boost Bitcoin gain based on your OS.";
 	return "No new bonuses";
 }
 
@@ -55,12 +60,14 @@ function getNextOSBonusZH(){
 	if(player.os.lt(23))return "购买计算机的花费除以10。";
 	if(player.os.lt(25))return "减少无限层级之前的文件加载时间。";
 	if(player.os.lt(27))return "使用格式化点数购买第2个升级的价格更便宜";
-	if(player.os.lt(29))return "解锁无限（暂未开放）";
+	if(player.os.lt(29))return "解锁无限";
+	if(player.os.lt(35))return "购买计算机的花费除以10。";
+	if(player.os.lt(41))return "基于操作系统加成文件点数";
 	return "暂无更多加成";
 }
 
 function getOSUpgradeCost(){
-	if(player.os.gte(29))return Decimal.dInf;
+	if(player.os.gte(45))return Decimal.dInf;
 	return Decimal.pow(10,player.os.add(hasAchievement(27)?12:hasAchievement(25)?13.5:15).pow(1.25).mul(3));
 }
 
@@ -75,4 +82,9 @@ function getOSFlatBonus(){
 	if(player.os.lt(8))return 1;
 	if(player.os.gte(21))return player.os.add(1).pow(2);
 	return player.os.add(1);
+}
+
+function getOSFlatBonus2(){
+	if(player.os.lt(41))return 1;
+	return player.os.add(5).log(5).pow(2);
 }

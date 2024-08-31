@@ -1,7 +1,7 @@
 ﻿<html lang="zh-cn">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader v1.0 by loader3229</title>
+<title>Incremental File Loader v2.0 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=true;</script>
 <script src="js/jquery.min.js"></script>
@@ -12,12 +12,13 @@
 <script src="js/os.js"></script>
 <script src="js/achievements.js"></script>
 <script src="js/save.js"></script>
+<script src="js/infinity.js"></script>
 <script src="/sha512.js"></script>
 <script src="js/game.js"></script>
 <meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader v1.0 by loader3229 | <span id="data2">0b</span> 数据</span>
+<span id="gametitle">Incremental File Loader v2.0 by loader3229 | <span id="data2">0b</span> 数据 | <span id="offline2"></span> 离线时间</span>
 <span id="ach1"><span id="ach" style="opacity:0;"></span> | <a href="javascript:show_window('about');" style="color:#ffffff;">关于/捐赠</a></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -74,6 +75,16 @@
 <img src="images/html.png">
 <div class="text">changelog.html</div>
 </a>
+
+<div id="offline_exe" class="file" onclick="show_window('offline');">
+<img src="images/exe.png">
+<div class="text">offline.exe</div>
+</div>
+
+<div id="infinity_exe" class="file" onclick="show_window('infinity');">
+<img src="images/exe.png">
+<div class="text">infinity.exe</div>
+</div>
 
 <div id="main" class="window">
 <div class="close" onclick="hide_window('main');">X</div>
@@ -197,6 +208,23 @@ CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></
 </div>
 </div>
 
+<div id="infinity" class="window">
+<div class="close" onclick="hide_window('infinity');">X</div>
+<div class="inner">
+<h2>你拥有 <span id="id1">0</span>无限数据。</h2>
+<hr>
+无限需要1.8e308B数据，并且会重置所有以前的东西以换取无限数据。<br>
+<a href="javascript:infinity_reset();" id="infinity_reset_link">Format</a><hr>
+<a href="javascript:show_subtab('infinity_upgrades')">无限升级</a> <a href="javascript:show_subtab('passive_loader')">被动加载器</a>
+<hr>
+<div id="infinity_upgrades" class="subtab"></div>
+<div id="passive_loader" class="subtab">
+被动加载器等级<span id="passive_loader_level1"></span>，正在以<span id="passive_loader_level3"></span>%速度加载前<span id="passive_loader_level2"></span>个文件<br>
+<a id="plupg" href="javascript:plUpgrade();">Upgrade</a><br>
+</div>
+</div>
+</div>
+
 
 <div id="about" class="window">
 <div class="close" onclick="hide_window('about');">X</div>
@@ -228,6 +256,24 @@ CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></
 你最快的格式化用了<span id="format_stat3"></span>。<br>
 你本次格式化用了<span id="format_stat4"></span>。<hr>
 </div>
+<div id="infinity_stat">
+你一共生产了<span id="infinity_stat1">0b</span>无限数据。<br>
+你无限了<span id="infinity_stat2"></span>次。<br>
+你最快的无限用了<span id="infinity_stat3"></span>。<br>
+你本次无限用了<span id="infinity_stat4"></span>。<hr>
+</div>
+</div>
+</div>
+
+<div id="offline" class="window">
+<div class="close" onclick="hide_window('offline');">X</div>
+<div class="inner">
+<h2>你拥有 <span id="offline1">0</span> 离线时间。</h2><hr>
+当前游戏速度：<span id="gamespeed"></span><br>
+调整游戏速度：<a href="javascript:adjustSpeed(-0.9)">0.1x</a> <a href="javascript:adjustSpeed(-0.8)">0.2x</a> <a href="javascript:adjustSpeed(-0.5)">0.5x</a> <a href="javascript:adjustSpeed(0)">1x</a>
+<a href="javascript:adjustSpeed(1)">2x</a> <a href="javascript:adjustSpeed(4)">5x</a> <a href="javascript:adjustSpeed(9)">10x</a> 
+<a href="javascript:adjustSpeed(19)">20x</a> <a href="javascript:adjustSpeed(49)">50x</a> <a href="javascript:adjustSpeed(99)">100x</a> <br>
+<a href="javascript:freeze_game(1);">冻结游戏</a> <a href="javascript:freeze_game(0);">解冻游戏</a> 
 </div>
 </div>
 

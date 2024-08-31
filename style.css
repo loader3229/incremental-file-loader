@@ -150,28 +150,39 @@ left:360px;
 
 
 #achievements_exe{
-top:150px;
+top:280px;
 left:20px;
 }
 
 #stats_exe{
-top:150px;
+top:280px;
 left:105px;
 }
 
 #settings_exe{
-top:150px;
+top:280px;
 left:190px;
 }
 
 #about_exe{
-top:150px;
+top:280px;
 left:275px;
 }
 
 #changelog_html{
-top:150px;
+top:280px;
 left:360px;
+}
+
+#offline_exe{
+top:280px;
+left:445px;
+}
+
+
+#infinity_exe{
+top:150px;
+left:20px;
 }
 
 .window{
@@ -182,11 +193,6 @@ width:calc(100% - 60px);
 height:calc(100% - 60px);
 background-color:#000000;
 z-index:2;
-display:none;
-}
-
-.window.shown{
-display:block;
 }
 
 .window .close{
@@ -207,8 +213,16 @@ width:calc(100% - 10px);
 height:calc(100% - 10px);
 background-color:#cccccc;
 z-index:3;
-
 }
+
+.window,.subtab{
+display:none;
+}
+
+.window.shown,.subtab.shown{
+display:block;
+}
+
 
 #export1{
 width:calc(100% - 10px);

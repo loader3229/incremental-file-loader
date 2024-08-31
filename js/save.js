@@ -1,5 +1,6 @@
 function getInitPlayer(){
 	return {
+		version:2.0,
 		loaded_files:[],
 		data:new Decimal(0),
 		totalData:new Decimal(0),
@@ -13,12 +14,28 @@ function getInitPlayer(){
 		loading:-1,
 		playTime:0,
 		formatTime:0,
-		formatCount:0,
+		formatCount:new Decimal(0),
 		bestFormatTime:1e308,
 		achievements:[],
 		pc:new Decimal(0),
 		os:new Decimal(0),
+		infinity:getInitInfinityData(),
+		lastTick:Date.now(),
+		offline:0,
 	};
+}
+
+function getInitInfinityData(){
+	return {
+		data:new Decimal(0),
+		totalData:new Decimal(0),
+		count:new Decimal(0),
+		bestTime:1e308,
+		currentTime:0,
+		upgrades:[],
+		oneUpgrades:[],
+		passiveLoader:0,
+	}
 }
 
 var player=getInitPlayer();
@@ -34,9 +51,10 @@ function loadgame(){
 	try{
 		player1=JSON.parse(atob(localStorage.FileLoaderSave));
 	}catch(e){
-		return;
+		setInterval(update,20);return;
 	}
 	
+	player=getInitPlayer();
 	if(player1.data)player.data=new Decimal(player1.data);
 	if(player1.totalData)player.totalData=new Decimal(player1.totalData);
 	if(player1.formatPoints)player.formatPoints=new Decimal(player1.formatPoints);
@@ -52,9 +70,26 @@ function loadgame(){
 	for(var i in player1.achievements)player.achievements[i]=player1.achievements[i];
 	player.loading=player1.loading || -1;
 	player.playTime=player1.playTime || 0;
-	player.formatTime=player1.formatTime || player1.playTime;
-	player.formatCount=player1.formatCount || 0;
+	player.formatTime=player1.formatTime ?? player1.playTime;
+	if(player1.formatCount)player.formatCount=new Decimal(player1.formatCount);
 	player.bestFormatTime=player1.bestFormatTime || 1e308;
+	if(!player1.infinity){
+		player.infinity=getInitInfinityData();
+		player.infinity.currentTime=player1.playTime;
+	}else{
+		player.infinity=getInitInfinityData();
+		player.infinity.currentTime=player1.infinity.currentTime ?? player1.playTime;
+		player.infinity.bestTime=player1.infinity.bestTime || 1e308;
+		player.infinity.passiveLoader=player1.infinity.passiveLoader || 0;
+		if(player1.infinity.data)player.infinity.data=new Decimal(player1.infinity.data);
+		if(player1.infinity.totalData)player.infinity.totalData=new Decimal(player1.infinity.totalData);
+		if(player1.infinity.count)player.infinity.count=new Decimal(player1.infinity.count);
+		for(var i in player1.infinity.oneUpgrades)player.infinity.oneUpgrades[i]=player1.infinity.oneUpgrades[i];
+		for(var i in player1.infinity.upgrades)player.infinity.upgrades[i]=new Decimal(player1.infinity.upgrades[i]);
+	}
+	player.offline=player1.offline || 0;
+	player.lastTick = player1.lastTick || Date.now();
+	setInterval(update,20);
 }
 
 function resetgame(){

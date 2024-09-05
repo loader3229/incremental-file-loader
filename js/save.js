@@ -1,6 +1,6 @@
 function getInitPlayer(){
 	return {
-		version:2.0,
+		version:2.1,
 		loaded_files:[],
 		data:new Decimal(0),
 		totalData:new Decimal(0),
@@ -35,6 +35,7 @@ function getInitInfinityData(){
 		upgrades:[],
 		oneUpgrades:[],
 		passiveLoader:0,
+		auto:new Decimal(0),
 	}
 }
 
@@ -84,6 +85,7 @@ function loadgame(){
 		if(player1.infinity.data)player.infinity.data=new Decimal(player1.infinity.data);
 		if(player1.infinity.totalData)player.infinity.totalData=new Decimal(player1.infinity.totalData);
 		if(player1.infinity.count)player.infinity.count=new Decimal(player1.infinity.count);
+		if(player1.infinity.auto)player.infinity.auto=new Decimal(player1.infinity.auto);
 		for(var i in player1.infinity.oneUpgrades)player.infinity.oneUpgrades[i]=player1.infinity.oneUpgrades[i];
 		for(var i in player1.infinity.upgrades)player.infinity.upgrades[i]=new Decimal(player1.infinity.upgrades[i]);
 	}

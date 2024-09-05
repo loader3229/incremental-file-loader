@@ -29,7 +29,9 @@ var ACHIEVEMENTS=[
 	["Half of a hundred PCs","Buy 50 new PCs.","Reduce data requirement for OS","一百台计算机的一半","购买50台新的计算机。","减少操作系统升级所需数据。"],
 	["To Infinity!","Go Infinity.","10x data","达到无限！","进行无限重置。","10倍数据获取"],
 	["To Fast Infinity!","Go Infinity within 1 hour.","Data Upgrades don't cost data","达到较快的无限！","1小时内无限。","数据升级不再花费数据"],
-	["To Faster Infinity!","Go Infinity within 10 minutes.","Format Upgrades don't cost format points","达到较快的无限！","1小时内无限。","格式化升级不再花费格式化点数"],
+	["To Faster Infinity!","Go Infinity within 10 minutes.","Format Upgrades don't cost format points","达到更快的无限！","10分钟内无限。","格式化升级不再花费格式化点数"],
+	["To Fastest Infinity!","Go Infinity within 1 minutes.","Bitcoin Upgrades don't cost Bitcoin","达到最快的无限！","1分钟内无限。","文件点数升级不再花费文件点数"],
+	["Blink of an eye","Go Infinity within 0.2s.","Unlock Auto-Infinity","眨眼之间","0.2秒内无限。","解锁自动无限"],
 ]
 
 function init_achievements(){
@@ -42,12 +44,16 @@ function init_achievements(){
 	achDivClose.addEventListener('click',function(){hide_window('achievements')});
 	achDiv.append(achDivClose);
 	document.body.append(achDiv);
+	var achDivTitle=document.createElement("div");
+	achDivTitle.className='windowtitle';
+	achDiv.append(achDivTitle);
+	achDivTitle.innerHTML=zhMode?'成就':'Achievements';
 	var achDivInner=document.createElement("div");
 	achDivInner.className='inner';
 	achDiv.append(achDivInner);
 	var achSpan=document.createElement("span");
-	achSpan.innerHTML="You have <span id=achcount> </span> Achievements, which are boosting File Loader by <span id=achbonus></span>x<hr>";
-	if(zhMode)achSpan.innerHTML="你获得了<span id=achcount> </span>个成就，文件加载器的速度变为原来的<span id=achbonus></span>倍。<hr>";
+	achSpan.innerHTML="<h2>You have <span id=achcount> </span> Achievements, which are boosting File Loader by <span id=achbonus></span>x</h2><hr>";
+if(zhMode)achSpan.innerHTML="<h2>你获得了<span id=achcount> </span>个成就，文件加载器的速度变为原来的<span id=achbonus></span>倍。</h2><hr>";
 	achDivInner.append(achSpan);
 	for(var i in ACHIEVEMENTS){
 		achSpan=document.createElement("span");
@@ -173,6 +179,12 @@ function checkAchievements(){
 	}
 	if(player.infinity.bestTime<=600){
 		getAchievement(30);
+	}
+	if(player.infinity.bestTime<=60){
+		getAchievement(31);
+	}
+	if(player.infinity.bestTime<=0.2){
+		getAchievement(32);
 	}
 	
 	$('#achcount').html(player.achievements.length);

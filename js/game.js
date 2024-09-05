@@ -78,7 +78,7 @@ function getBcUpgradeLevel(a){
 }
 
 function getUpgradeEffect(a){
-	if(a==0)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)).pow(0.8).div(hasInfinityOneUpgrade(2,1)?1.3:hasInfinityOneUpgrade(2,0)?1.1:1));
+	if(a==0)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)).pow(0.8).div(hasInfinityOneUpgrade(2,3)?2:hasInfinityOneUpgrade(2,2)?1.6:hasInfinityOneUpgrade(2,1)?1.3:hasInfinityOneUpgrade(2,0)?1.1:1));
 	if(a==1)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)));
 	if(a==2)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)));
 	if(a==3)return Decimal.pow(1.5,getUpgradeLevel(a).add(getFormatUpgradeLevel(a)).add(getBcUpgradeLevel(a)));
@@ -89,7 +89,7 @@ function getUpgradeCost(a,x){
 	x=new Decimal(x);
 	if(a==0)return Decimal.pow(2,x.pow(1.2));
 	if(a==1)return Decimal.pow(2,x.mul(2).add(player.os.gte(17)?0:10));
-	if(a==2 && hasAchievement(19))return Decimal.pow(player.os.gte(17)?1.5:1.9,Decimal.pow(player.os.gte(17)?1.5:1.9,x));
+	if(a==2 && hasAchievement(19))return Decimal.pow(player.os.gte(47)?1.35:player.os.gte(17)?1.5:1.9,Decimal.pow(player.os.gte(47)?1.35:player.os.gte(17)?1.5:1.9,x));
 	if(a==2)return Decimal.pow(2,Decimal.pow(2,x.add(5)));
 	if(a==3)return Decimal.pow(10,Decimal.pow(player.os.gte(17)?1.05:1.1,x.pow(2)).mul(player.os.gte(17)?1:30));
 }
@@ -106,8 +106,8 @@ function getFormatUpgradeCost(a,x){
 function getBcUpgradeCost(a,x){
 	if(x===undefined)x=getBcUpgradeLevel(a);
 	x=new Decimal(x);
-	if(a==0)return Decimal.pow(5,x);
-	if(a==1)return Decimal.pow(3,x.add(1));
+	if(a==0)return Decimal.pow(player.os.gte(59)?3.5:5,x);
+	if(a==1)return Decimal.pow(player.os.gte(69)?2.5:3,x.add(player.os.gte(69)?0:1));
 	if(a==2)return Decimal.pow(2,x.add(2)).mul(25);
 	if(a==3)return Decimal.pow(4,x.add(3));
 }
@@ -117,7 +117,7 @@ function getUpgradeBulk(a,x){
 	x=new Decimal(x);
 	if(a==0)return x.max(0.1).log(2).pow(1/1.2).add(1).floor().max(0);
 	if(a==1)return x.max(0.1).log(2).sub(player.os.gte(17)?0:10).div(2).add(1).floor().max(0);
-	if(a==2 && hasAchievement(19))return x.max(0.1).log(player.os.gte(17)?1.5:1.9).max(0.1).log(player.os.gte(17)?1.5:1.9).add(1).floor().max(0);
+	if(a==2 && hasAchievement(19))return x.max(0.1).log(player.os.gte(47)?1.35:player.os.gte(17)?1.5:1.9).max(0.1).log(player.os.gte(47)?1.35:player.os.gte(17)?1.5:1.9).add(1).floor().max(0);
 	if(a==2)return x.max(0.1).log(2).max(0.1).log(2).sub(5).add(1).floor().max(0);
 	if(a==3)return x.max(0.1).log(10).div(player.os.gte(17)?1:30).max(0.1).log(player.os.gte(17)?1.05:1.1).pow(0.5).add(1).floor().max(0);
 }
@@ -129,6 +129,15 @@ function getFormatUpgradeBulk(a,x){
 	if(a==1)return x.max(0.1).log(player.os.gte(27)?2:3).add(1).floor().max(0);
 	if(a==2)return x.max(0.1).log(4).sub(player.os.gte(15)?0:13).add(1).floor().max(0);
 	if(a==3)return x.div(player.os.gte(15)?1:1e10).max(0.1).log(5).pow(1/1.5).add(1).floor().max(0);
+}
+
+function getBcUpgradeBulk(a,x){
+	if(x===undefined)x=player.bitcoin;
+	x=new Decimal(x);
+	if(a==0)return x.max(0.1).log(player.os.gte(59)?3.5:5).add(1).floor().max(0);
+	if(a==1)return x.max(0.1).log(player.os.gte(69)?2.5:3).add(player.os.gte(69)?1:0).floor().max(0);
+	if(a==2)return x.div(25).max(0.1).log(2).add(-1).floor().max(0);
+	if(a==3)return x.max(0.1).log(4).add(-2).floor().max(0);
 }
 
 function upgrade(a){
@@ -160,8 +169,16 @@ function buyMaxUpgrade1(a){
 
 function bcUpgrade(a){
 	if(player.bitcoin.gte(getBcUpgradeCost(a))){
-		player.bitcoin=player.bitcoin.sub(getBcUpgradeCost(a));
+		if(!hasAchievement(31))player.bitcoin=player.bitcoin.sub(getBcUpgradeCost(a));
 		player.bcUpgrades[a]=getBcUpgradeLevel(a).add(1);
+	}
+}
+
+function bcMaxUpgrade(a){
+	if(player.bitcoin.gte(getBcUpgradeCost(a))){
+		var b=getBcUpgradeBulk(a);
+		if(!hasAchievement(31))player.bitcoin=player.bitcoin.sub(getBcUpgradeCost(a,b.sub(1)));
+		player.bcUpgrades[a]=b;
 	}
 }
 
@@ -243,9 +260,8 @@ function realBitcoinGain(){
 }
 
 function getFilePower(){
-	if(hasInfinityOneUpgrade(2,1))return 1.3;
-	if(hasInfinityOneUpgrade(2,0))return 1.1;
-	return 1;
+	let a=new Decimal(hasInfinityOneUpgrade(2,3)?2:hasInfinityOneUpgrade(2,2)?1.6:hasInfinityOneUpgrade(2,1)?1.3:hasInfinityOneUpgrade(2,0)?1.1:1);
+	return a;
 }
 
 function fileEffect(a){
@@ -255,7 +271,15 @@ function fileEffect(a){
 }
 
 function getPcReq(){
-	return Decimal.pow(1.5,player.pc).mul(hasAchievement(26)?1000:hasAchievement(22)?10000:20000).div(player.os.gte(35)?100:player.os.gte(23)?10:1);
+	return Decimal.pow(1.5,player.pc).mul(hasAchievement(26)?1000:hasAchievement(22)?10000:20000).div(player.os.gte(53)?1000:player.os.gte(35)?100:player.os.gte(23)?10:1);
+}
+
+function getPcBulk(){
+	return player.bitcoin.div(hasAchievement(26)?1000:hasAchievement(22)?10000:20000).mul(player.os.gte(53)?1000:player.os.gte(35)?100:player.os.gte(23)?10:1).max(0.1).log(1.5).add(1).floor().max(0);
+}
+
+function getPcBulkNext(){
+	return Decimal.pow(1.5,getPcBulk()).mul(hasAchievement(26)?1000:hasAchievement(22)?10000:20000).div(player.os.gte(53)?1000:player.os.gte(35)?100:player.os.gte(23)?10:1);
 }
 
 function getPcBonus(){
@@ -268,6 +292,7 @@ function buypc(){
 		player.upgrades=[];
 		player.formatPoints=new Decimal(0);
 		player.formatUpgrades=[];
+		player.pc=getPcBulk().sub(1);
 		player.bitcoin=player.bitcoin.sub(getPcReq());
 		player.pc=player.pc.add(1);
 	}
@@ -424,6 +449,21 @@ function update(){
 		}
 	}
 	
+	if(hasInfinityOneUpgrade(0,2)){
+		for(var i=0;i<=3;i++){
+
+			if(player.bitcoin.gte(getBcUpgradeCost(i))){
+				var b=getBcUpgradeBulk(i);
+				if(!hasAchievement(31))player.bitcoin=player.bitcoin.sub(getBcUpgradeCost(i,b.sub(1)));
+				player.bcUpgrades[i]=b;
+			}
+		}
+	}
+	
+	if(hasInfinityOneUpgrade(1,2)){
+		player.formatCount=player.formatCount.add(player.infinity.count.mul(diff));
+	}
+	
 	$("#upgrades_exe").css("display",hasAchievement(0)?"":"none");
 	$("#adder_exe").css("display",hasAchievement(1)?"":"none");
 	$("#multiplier_exe").css("display",hasAchievement(2)?"":"none");
@@ -489,7 +529,10 @@ function update(){
 	$("#pc2").html(format(getPcBonus()));
 	$("#os1").html(getOSName());
 	$("#buypc").html((zhMode?"购买新的计算机（":"Buy a new PC (")+format(getPcReq())+(zhMode?"文件点数）":" Bitcoins)"));
-	$("#osupg").html((zhMode?"升级到":"Upgrade to ")+getNextOSName()+(zhMode?"，需要":", requires ")+formatData(getOSUpgradeCost())+(zhMode?"数据。在":" data. At ")+getNextOSName2()+(zhMode?"，"+getNextOSBonusZH():", "+getNextOSBonus()));
+	if(player.bitcoin.gte(getPcReq().mul(1.5))){
+		$("#buypc").html((zhMode?"购买"+formatWhole(getPcBulk().sub(player.pc))+"台新的计算机（":"Buy "+formatWhole(getPcBulk().sub(player.pc))+" new PCs (")+format(getPcReq().mul(Decimal.pow(1.5,getPcBulk().sub(player.pc).sub(1))))+(zhMode?"文件点数）":" Bitcoins)"));
+	}
+	$("#osupg").html((zhMode?"升级到":"Upgrade to ")+getNextOSName()+(zhMode?"，需要":", requires ")+formatData(getOSUpgradeCost(getOSUpgradeBulk().sub(1).max(player.os)))+(zhMode?"数据。在":" data. At ")+getNextOSName2()+(zhMode?"，"+getNextOSBonusZH():", "+getNextOSBonus()));
 	infinityUpdate();
 	
 	checkAchievements();

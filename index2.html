@@ -1,7 +1,7 @@
 ﻿<html lang="zh-cn">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader v2.0 by loader3229</title>
+<title>Incremental File Loader v2.1 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=true;</script>
 <script src="js/jquery.min.js"></script>
@@ -18,7 +18,7 @@
 <meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader v2.0 by loader3229 | <span id="data2">0b</span> 数据 | <span id="offline2"></span> 离线时间</span>
+<span id="gametitle">Incremental File Loader v2.1 by loader3229 | <span id="data2">0b</span> 数据 | <span id="offline2"></span> 离线时间</span>
 <span id="ach1"><span id="ach" style="opacity:0;"></span> | <a href="javascript:show_window('about');" style="color:#ffffff;">关于/捐赠</a></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -87,6 +87,7 @@
 </div>
 
 <div id="main" class="window">
+<div class="windowtitle">文件加载器</div>
 <div class="close" onclick="hide_window('main');">X</div>
 <div class="inner">
 <h2>你拥有 <span id="data1">0b</span> 数据<span id="bc2"></span>。</h2>
@@ -99,7 +100,6 @@
 <div class="text">data_generator.exe</div>
 <div id="cnt1" class="cnt">0</div>
 </div>
-
 
 <div id="adder_exe" class="file" onclick="loadFile(3);">
 <div id="p3a" class="progress_bar"><div id="p3" class="progress_bar1"></div></div>
@@ -156,6 +156,7 @@
 
 
 <div id="upgrades" class="window">
+<div class="windowtitle">升级</div>
 <div class="close" onclick="hide_window('upgrades');">X</div>
 <div class="inner">
 <h2>你拥有 <span id="data3">0b</span> 数据<span id="fp2"></span>。</h2>
@@ -172,6 +173,7 @@
 </div>
 
 <div id="format" class="window">
+<div class="windowtitle">格式化</div>
 <div class="close" onclick="hide_window('format');">X</div>
 <div class="inner">
 <h2>你拥有 <span id="fp1">0</span>格式化点数。</h2>
@@ -183,14 +185,15 @@
 </div>
 
 <div id="shop" class="window">
+<div class="windowtitle">商店</div>
 <div class="close" onclick="hide_window('shop');">X</div>
 <div class="inner">
 <h2>你拥有 <span id="bc1">0</span>文件点数。</h2>
 <hr>
-CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></span>。<a id="bcupg0" href="javascript:bcUpgrade(0);">Upgrade</a><br>
-内存等级<span id="bcu1a"></span>，第二个升级的等级+<span id="bcu1b"></span>。<a id="bcupg1" href="javascript:bcUpgrade(1);">Upgrade</a><br>
-<div id="bcu2" style="display:none;">硬盘等级<span id="bcu2a"></span>，第三个升级的等级+<span id="bcu2b"></span>。<a id="bcupg2" href="javascript:bcUpgrade(2);">Upgrade</a><br></div>
-<div id="bcu3" style="display:none;">网络连接等级<span id="bcu3a"></span>，第四个升级的等级+<span id="bcu3b"></span>。<a id="bcupg3" href="javascript:bcUpgrade(3);">Upgrade</a><br></div>
+CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></span>。<a id="bcupg0" href="javascript:bcUpgrade(0);">Upgrade</a> <a id="bcupg0a" href="javascript:bcMaxUpgrade(0);">最大</a><br>
+内存等级<span id="bcu1a"></span>，第二个升级的等级+<span id="bcu1b"></span>。<a id="bcupg1" href="javascript:bcUpgrade(1);">Upgrade</a> <a id="bcupg1a" href="javascript:bcMaxUpgrade(1);">最大</a><br>
+<div id="bcu2" style="display:none;">硬盘等级<span id="bcu2a"></span>，第三个升级的等级+<span id="bcu2b"></span>。<a id="bcupg2" href="javascript:bcUpgrade(2);">Upgrade</a> <a id="bcupg2a" href="javascript:bcMaxUpgrade(2);">最大</a><br></div>
+<div id="bcu3" style="display:none;">网络连接等级<span id="bcu3a"></span>，第四个升级的等级+<span id="bcu3b"></span>。<a id="bcupg3" href="javascript:bcUpgrade(3);">Upgrade</a> <a id="bcupg3a" href="javascript:bcMaxUpgrade(3);">最大</a><br></div>
 <hr>
 您拥有<span id="pc1"></span>台买过来的计算机，文件加载器速度、数据和文件点数的获取变为原来的<span id="pc2"></span>倍。<br>
 购买新的计算机将会进行格式化重置，并且重置格式化点数和所有升级。<br>
@@ -199,6 +202,7 @@ CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></
 </div>
 
 <div id="oswindow" class="window">
+<div class="windowtitle">操作系统升级</div>
 <div class="close" onclick="hide_window('oswindow');">X</div>
 <div class="inner">
 <h2>你正在使用的操作系统：<span id="os1">0</span></h2>
@@ -209,24 +213,34 @@ CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></
 </div>
 
 <div id="infinity" class="window">
+<div class="windowtitle">无限</div>
 <div class="close" onclick="hide_window('infinity');">X</div>
 <div class="inner">
 <h2>你拥有 <span id="id1">0</span>无限数据。</h2>
 <hr>
 无限需要1.8e308B数据，并且会重置所有以前的东西以换取无限数据。<br>
 <a href="javascript:infinity_reset();" id="infinity_reset_link">Format</a><hr>
-<a href="javascript:show_subtab('infinity_upgrades')">无限升级</a> <a href="javascript:show_subtab('passive_loader')">被动加载器</a>
+<a href="javascript:show_subtab('infinity_upgrades')">无限升级</a>
+<a href="javascript:show_subtab('passive_loader')">被动加载器</a>
+<a id="auto_infinity_link" href="javascript:show_subtab('auto_infinity')">自动无限</a>
 <hr>
 <div id="infinity_upgrades" class="subtab"></div>
 <div id="passive_loader" class="subtab">
 被动加载器等级<span id="passive_loader_level1"></span>，正在以<span id="passive_loader_level3"></span>%速度加载前<span id="passive_loader_level2"></span>个文件<br>
 <a id="plupg" href="javascript:plUpgrade();">Upgrade</a><br>
 </div>
+<div id="auto_infinity" class="subtab">
+当可以得到 <input id=auto_infinity_amount /> B无限数据时自动无限。
+<a id="plupg" href="javascript:setAutoInfinity();">设置</a>
+<a id="plupg" href="javascript:disableAutoInfinity();">关闭</a><br>
+Currently: <span id=auto_infinity_stat></span>
+</div>
 </div>
 </div>
 
 
 <div id="about" class="window">
+<div class="windowtitle">关于</div>
 <div class="close" onclick="hide_window('about');">X</div>
 <div class="inner">
 <h1>Incremental File Loader</h1>
@@ -246,6 +260,7 @@ CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></
 </div>
 
 <div id="stats" class="window">
+<div class="windowtitle">统计信息</div>
 <div class="close" onclick="hide_window('stats');">X</div>
 <div class="inner">
 你一共生产了<span id="total_data">0b</span> 数据<span id="bitcoin_stat">和<span id="bitcoin_stat1"></span>文件点数</span>。<br>
@@ -266,6 +281,7 @@ CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></
 </div>
 
 <div id="offline" class="window">
+<div class="windowtitle">离线时间</div>
 <div class="close" onclick="hide_window('offline');">X</div>
 <div class="inner">
 <h2>你拥有 <span id="offline1">0</span> 离线时间。</h2><hr>
@@ -278,6 +294,7 @@ CPU等级<span id="bcu0a"></span>，第一个升级的等级+<span id="bcu0b"></
 </div>
 
 <div id="settings" class="window">
+<div class="windowtitle">设置</div>
 <div class="close" onclick="hide_window('settings');">X</div>
 <div class="inner">
 <button onclick=savegame();>存档</button>

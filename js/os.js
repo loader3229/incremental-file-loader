@@ -1,16 +1,18 @@
-function getOSName(){
-	if(player.os.gte(29))return "Loadux "+formatWhole(player.os.add(31).div(3).floor())+"."+formatWhole(player.os.add(1).toNumber() % 3);
-	if(player.os.gte(9))return "Loadux "+formatWhole(player.os.add(11).div(2).floor())+"."+formatWhole(player.os.add(1).toNumber() % 2);
-	return "Loadux "+formatWhole(player.os.add(1))+".0";
+function getOSName(x){
+	if(x===undefined)x=player.os;
+	x=new Decimal(x);
+	if(x.gte(59))return "Loadux "+formatWhole(x.add(91).div(5).floor())+"."+formatWhole(x.add(1).toNumber() % 5);
+	if(x.gte(29))return "Loadux "+formatWhole(x.add(31).div(3).floor())+"."+formatWhole(x.add(1).toNumber() % 3);
+	if(x.gte(9))return "Loadux "+formatWhole(x.add(11).div(2).floor())+"."+formatWhole(x.add(1).toNumber() % 2);
+	return "Loadux "+formatWhole(x.add(1))+".0";
 }
 
 function getNextOSName(){
-	if(player.os.gte(29))return "Loadux "+formatWhole(player.os.add(32).div(3).floor())+"."+formatWhole(player.os.add(2).toNumber() % 3);
-	if(player.os.gte(9))return "Loadux "+formatWhole(player.os.add(12).div(2).floor())+"."+formatWhole(player.os.toNumber() % 2);
-	return "Loadux "+formatWhole(player.os.add(2))+".0";
+	return getOSName(getOSUpgradeBulk().max(player.os.add(1)));
 }
 
 function getNextOSName2(){
+	if(player.os.gte(59))return "Loadux "+formatWhole(player.os.add(101).div(10).floor().mul(2))+".0";
 	if(player.os.gte(29))return "Loadux "+formatWhole(player.os.add(37).div(6).floor().mul(2))+".0";
 	if(player.os.gte(9))return "Loadux "+formatWhole(player.os.add(13).div(2).floor())+".0";
 	return "Loadux "+formatWhole(player.os.add(2))+".0";
@@ -38,6 +40,11 @@ function getNextOSBonus(){
 	if(player.os.lt(29))return "Unlock Infinity";
 	if(player.os.lt(35))return "Divide PC price by 10";
 	if(player.os.lt(41))return "Boost Bitcoin gain based on your OS.";
+	if(player.os.lt(47))return "Data cost of Upgrade 3 is cheaper";
+	if(player.os.lt(53))return "Divide PC price by 10";
+	if(player.os.lt(59))return "CPU is cheaper";
+	if(player.os.lt(69))return "RAM is cheaper";
+	if(player.os.lt(79))return "Hard Disk is cheaper";
 	return "No new bonuses";
 }
 
@@ -63,18 +70,32 @@ function getNextOSBonusZH(){
 	if(player.os.lt(29))return "解锁无限";
 	if(player.os.lt(35))return "购买计算机的花费除以10。";
 	if(player.os.lt(41))return "基于操作系统加成文件点数";
+	if(player.os.lt(47))return "使用数据购买第3个升级的价格更便宜";
+	if(player.os.lt(53))return "购买计算机的花费除以10。";
+	if(player.os.lt(59))return "CPU更便宜";
+	if(player.os.lt(69))return "内存更便宜";
+	if(player.os.lt(79))return "硬盘更便宜";
 	return "暂无更多加成";
 }
 
-function getOSUpgradeCost(){
-	if(player.os.gte(45))return Decimal.dInf;
-	return Decimal.pow(10,player.os.add(hasAchievement(27)?12:hasAchievement(25)?13.5:15).pow(1.25).mul(3));
+function getOSUpgradeCost(x){
+	if(x===undefined)x=player.os;
+	x=new Decimal(x);
+	if(x.gte(88))return Decimal.dInf;
+	return Decimal.pow(10,x.add(hasAchievement(27)?12:hasAchievement(25)?13.5:15).pow(1.25).mul(3));
+}
+
+function getOSUpgradeBulk(){
+	if(hasInfinityOneUpgrade(3,1)){
+		return player.data.max(0.1).log(10).div(3).pow(1/1.25).sub(hasAchievement(27)?12:hasAchievement(25)?13.5:15).add(1).floor().max(0).min(88);
+	}
+	return player.os.add(1).min(88);
 }
 
 function osupg(){
 	if(player.data.gte(getOSUpgradeCost())){
+		player.os=player.os.max(getOSUpgradeBulk());
 		format_reset(true);
-		player.os=player.os.add(1);
 	}
 }
 

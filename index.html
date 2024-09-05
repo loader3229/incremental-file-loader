@@ -1,7 +1,7 @@
 ﻿<html lang="en">
 <head>
 <meta charset=utf-8>
-<title>Incremental File Loader v2.0 by loader3229</title>
+<title>Incremental File Loader v2.1 by loader3229</title>
 <link rel="stylesheet" href="style.css">
 <script>zhMode=false;</script>
 <script src="js/jquery.min.js"></script>
@@ -18,7 +18,7 @@
 <meta name="viewport" content="width=1000, user-scalable=no">
 </head>
 <body onload="loadgame()">
-<span id="gametitle">Incremental File Loader v2.0 by loader3229 | <span id="data2">0b</span> Data | <span id="offline2"></span> Offline Time</span>
+<span id="gametitle">Incremental File Loader v2.1 by loader3229 | <span id="data2">0b</span> Data | <span id="offline2"></span> Offline Time</span>
 <span id="ach1"><span id="ach" style="opacity:0;"></span> | <a href="javascript:show_window('about');" style="color:#ffffff;">About/Donate</a></span>
 <div id="file_loader_exe" class="file" onclick="show_file_loader();">
 <div id="p0a" class="progress_bar"><div id="p0" class="progress_bar1"></div></div>
@@ -87,6 +87,7 @@
 </div>
 
 <div id="main" class="window">
+<div class="windowtitle">File Loader</div>
 <div class="close" onclick="hide_window('main');">X</div>
 <div class="inner">
 <h2>You have <span id="data1">0b</span> data<span id="bc2"></span>.</h2>
@@ -155,6 +156,7 @@
 
 
 <div id="upgrades" class="window">
+<div class="windowtitle">Upgrades</div>
 <div class="close" onclick="hide_window('upgrades');">X</div>
 <div class="inner">
 <h2>You have <span id="data3">0b</span> data<span id="fp2"></span>.</h2>
@@ -171,6 +173,7 @@ File Loader Level <span id="upg0">upgrade</span>, Speed: <span id="speed"></span
 </div>
 
 <div id="format" class="window">
+<div class="windowtitle">Format</div>
 <div class="close" onclick="hide_window('format');">X</div>
 <div class="inner">
 <h2>You have <span id="fp1">0</span> format points.</h2>
@@ -182,14 +185,15 @@ Format points can be used to buy upgrades in upgrades.exe.<br>
 </div>
 
 <div id="shop" class="window">
+<div class="windowtitle">Shop</div>
 <div class="close" onclick="hide_window('shop');">X</div>
 <div class="inner">
 <h2>You have <span id="bc1">0</span> Bitcoins.</h2>
 <hr>
-CPU Level <span id="bcu0a"></span>, which increase the level of first upgrade by <span id="bcu0b"></span>. <a id="bcupg0" href="javascript:bcUpgrade(0);">Upgrade</a><br>
-RAM Level <span id="bcu1a"></span>, which increase the level of second upgrade by <span id="bcu1b"></span>. <a id="bcupg1" href="javascript:bcUpgrade(1);">Upgrade</a><br>
-<div id="bcu2" style="display:none;">Hard Disk Level <span id="bcu2a"></span>, which increase the level of third upgrade by <span id="bcu2b"></span>. <a id="bcupg2" href="javascript:bcUpgrade(2);">Upgrade</a><br></div>
-<div id="bcu3" style="display:none;">Network Level <span id="bcu3a"></span>, which increase the level of fourth upgrade by <span id="bcu3b"></span>. <a id="bcupg3" href="javascript:bcUpgrade(3);">Upgrade</a><br></div>
+CPU Level <span id="bcu0a"></span>, which increase the level of first upgrade by <span id="bcu0b"></span>. <a id="bcupg0" href="javascript:bcUpgrade(0);">Upgrade</a> <a id="bcupg0a" href="javascript:bcMaxUpgrade(0);">Max</a><br>
+RAM Level <span id="bcu1a"></span>, which increase the level of second upgrade by <span id="bcu1b"></span>. <a id="bcupg1" href="javascript:bcUpgrade(1);">Upgrade</a> <a id="bcupg1a" href="javascript:bcMaxUpgrade(1);">Max</a><br>
+<div id="bcu2" style="display:none;">Hard Disk Level <span id="bcu2a"></span>, which increase the level of third upgrade by <span id="bcu2b"></span>. <a id="bcupg2" href="javascript:bcUpgrade(2);">Upgrade</a> <a id="bcupg2a" href="javascript:bcMaxUpgrade(2);">Max</a><br></div>
+<div id="bcu3" style="display:none;">Network Level <span id="bcu3a"></span>, which increase the level of fourth upgrade by <span id="bcu3b"></span>. <a id="bcupg3" href="javascript:bcUpgrade(3);">Upgrade</a> <a id="bcupg3a" href="javascript:bcMaxUpgrade(3);">Max</a><br></div>
 <hr>
 You have <span id="pc1"></span> Bought PCs, which are boosting File Loader Speed, Data Gain, Bitcoin Gain by <span id="pc2"></span>x.<br>
 Buying a new PC will force a format reset, and reset all upgrades and format points.<br>
@@ -198,6 +202,7 @@ Buying a new PC will force a format reset, and reset all upgrades and format poi
 </div>
 
 <div id="oswindow" class="window">
+<div class="windowtitle">Operating System Updater</div>
 <div class="close" onclick="hide_window('oswindow');">X</div>
 <div class="inner">
 <h2>Your OS: <span id="os1">0</span></h2>
@@ -208,24 +213,34 @@ Upgrading your OS will force a format reset.<br>
 </div>
 
 <div id="infinity" class="window">
+<div class="windowtitle">Infinity</div>
 <div class="close" onclick="hide_window('infinity');">X</div>
 <div class="inner">
 <h2>You have <span id="id1">0</span> Infinity Data.</h2>
 <hr>
 Infinity requires 1.8e308B data and will reset all previous for Infinity Data.<br>
 <a href="javascript:infinity_reset();" id="infinity_reset_link">Format</a><hr>
-<a href="javascript:show_subtab('infinity_upgrades')">Upgrades</a> <a href="javascript:show_subtab('passive_loader')">Passive Loader</a>
+<a href="javascript:show_subtab('infinity_upgrades')">Upgrades</a>
+<a href="javascript:show_subtab('passive_loader')">Passive Loader</a>
+<a id="auto_infinity_link" href="javascript:show_subtab('auto_infinity')">Auto Infinity</a>
 <hr>
 <div id="infinity_upgrades" class="subtab"></div>
 <div id="passive_loader" class="subtab">
 Passive File Loader Level <span id="passive_loader_level1"></span>, which are loading first <span id="passive_loader_level2"></span> files at <span id="passive_loader_level3"></span>% speed<br>
 <a id="plupg" href="javascript:plUpgrade();">Upgrade</a><br>
 </div>
+<div id="auto_infinity" class="subtab">
+Auto Infinity when you can get <input id=auto_infinity_amount /> B Infinity Data.
+<a id="plupg" href="javascript:setAutoInfinity();">Set</a>
+<a id="plupg" href="javascript:disableAutoInfinity();">Disable</a><br>
+Currently: <span id=auto_infinity_stat></span>
+</div>
 </div>
 </div>
 
 
 <div id="about" class="window">
+<div class="windowtitle">About</div>
 <div class="close" onclick="hide_window('about');">X</div>
 <div class="inner">
 <h1>Incremental File Loader</h1>
@@ -245,6 +260,7 @@ Achievements inspired by <a href="https://ivark.github.io">Antimatter Dimensions
 </div>
 
 <div id="stats" class="window">
+<div class="windowtitle">Stats</div>
 <div class="close" onclick="hide_window('stats');">X</div>
 <div class="inner">
 You produced a total of <span id="total_data">0b</span> data<span id="bitcoin_stat"> and <span id="bitcoin_stat1"></span> Bitcoins</span>.<br>
@@ -265,6 +281,7 @@ You spent <span id="infinity_stat4"></span> in current infinity reset.<hr>
 </div>
 
 <div id="offline" class="window">
+<div class="windowtitle">Offline Time</div>
 <div class="close" onclick="hide_window('offline');">X</div>
 <div class="inner">
 <h2>You have <span id="offline1">0</span> of Offline Time.</h2><hr>
@@ -277,6 +294,7 @@ Adjust Game Speed: <a href="javascript:adjustSpeed(-0.9)">0.1x</a> <a href="java
 </div>
 
 <div id="settings" class="window">
+<div class="windowtitle">Settings</div>
 <div class="close" onclick="hide_window('settings');">X</div>
 <div class="inner">
 <button onclick=savegame();>Save</button>

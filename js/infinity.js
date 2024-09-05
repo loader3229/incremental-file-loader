@@ -1,36 +1,35 @@
 function infinityDataGain(){
 	if(player.data.lt(Number.MAX_VALUE))return new  Decimal(0);
-	return Decimal.pow(10,player.data.add(100).log10().div(308).pow(0.75)).mul(10).sub(100).mul(8).floor().div(8).max(0);
+	return Decimal.pow(10,player.data.add(100).log10().div(308).pow(0.75)).mul(10).sub(100).mul(getInfUpgradeEffect(0)).mul(8).floor().div(8).max(0);
 }
 
 var infinityOneUpgrades=[
 [
 ["Infinity Count boost File Loader","无限次数加成文件加载器",1,function(){return format(player.infinity.count.add(1))+"x"}],
 ["Autobuy Upgrades with data","自动使用数据购买升级",2],
-//["Upgrade 3 is cheaper when buying with data","升级3的数据价格变得更便宜",1e308],
-//["Unlock a new program","解锁新的程序",1e308],//loader_booster.exe
+["Autobuy Shop Upgrades with Bitcoins","自动使用文件点数购买升级",512],
+//["Unlock a new program","解锁新的程序",1048576],//loader_booster.exe
 ],
 
 [
 ["Format Count boost Format Points","格式化次数加成格式化点数",5,function(){return format(player.formatCount.add(1))+"x"}],
 ["Autobuy Upgrades with format points","自动使用格式化点数购买升级",10],
-//["Format Point gain formula is better","格式化点数公式更好"],
-//["Gain Format Count per second equals to Infinity Count","每秒得到无限次数的格式化次数"],
-//["Unlock Format Challenges","解锁格式化挑战"]
+["Gain Format Count per second equals to Infinity Count","每秒得到无限次数的格式化次数",200],
+//["Unlock Format Challenges","解锁格式化挑战",40960]
 ],
 
 [
 ["Base File Loader Speed ^(1/1.1) but Program Power x1.1","基础文件加载器效果^(1/1.1)但是文件力量1.1倍",4],
 ["Base File Loader Speed ^(1/1.3) but Program Power x1.3 (Replace upgrade above)","基础文件加载器效果^(1/1.3)但是文件力量1.3倍（覆盖上一个升级）",40],
-//["Base File Loader Speed ^(1/1.6) but Program Power x1.6 (Replace upgrade above)","基础文件加载器效果^(1/1.6)但是文件力量1.6倍（覆盖上一个升级）"],
-//["Base File Loader Speed ^(1/2.0) but Program Power x2.0 (Replace upgrade above)","基础文件加载器效果^(1/2.0)但是文件力量2.0倍（覆盖上一个升级）"],
+["Base File Loader Speed ^(1/1.6) but Program Power x1.6 (Replace upgrade above)","基础文件加载器效果^(1/1.6)但是文件力量1.6倍（覆盖上一个升级）",400],
+["Base File Loader Speed ^(1/2.0) but Program Power x2.0 (Replace upgrade above)","基础文件加载器效果^(1/2.0)但是文件力量2.0倍（覆盖上一个升级）",4096],
 ],
 
 [
 ["You start with OS Version 5.0","以5.0版操作系统开始无限",2],
-["You start with OS Version 10.0","以10.0版操作系统开始无限",16],
-//["You start with OS Version 15.0","以15.0版操作系统开始无限"],
-//["You start with OS Version 20.0","以20.0版操作系统开始无限"]
+["You start with OS Version 10.0, you can bulk update OS","以10.0版操作系统开始无限，并且可以批量升级操作系统",16],
+["You start with OS Version 15.0","以15.0版操作系统开始无限",128],
+["You start with OS Version 20.0, keep your OS on infinity","以20.0版操作系统开始无限，无限时保留操作系统",1024]
 ],
 
 ];
@@ -51,8 +50,8 @@ function buyInfinityOneUpgrade(x,y){
 	if(x==3){
 		if(y==0)player.os=player.os.max(4);
 		if(y==1)player.os=player.os.max(9);
-		if(y==2)player.os=player.os.max(20);
-		if(y==3)player.os=player.os.max(30);
+		if(y==2)player.os=player.os.max(19);
+		if(y==3)player.os=player.os.max(29);
 	}
 }
 
@@ -76,7 +75,7 @@ function infinity_reset(a){
 		player.formatCount=new Decimal(0);
 		player.bitcoin=new Decimal(0);
 		player.pc=new Decimal(0);
-		player.os=new Decimal(0);
+		if(!hasInfinityOneUpgrade(3,3))player.os=new Decimal(0);
 		player.bcUpgrades=[];
 		player.loading=-1;
 		player.formatTime=0;
@@ -92,8 +91,8 @@ function infinity_reset(a){
 		player.loaded_files[11]=new Decimal(0);
 		if(hasInfinityOneUpgrade(3,0))player.os=player.os.max(4);
 		if(hasInfinityOneUpgrade(3,1))player.os=player.os.max(9);
-		if(hasInfinityOneUpgrade(3,2))player.os=player.os.max(20);
-		if(hasInfinityOneUpgrade(3,3))player.os=player.os.max(30);
+		if(hasInfinityOneUpgrade(3,2))player.os=player.os.max(19);
+		if(hasInfinityOneUpgrade(3,3))player.os=player.os.max(29);
 	}
 }
 
@@ -101,6 +100,9 @@ function infinityUpdate(){
 	$("#id1").html(formatData3(player.infinity.data));
 	$("#infinity_reset_link").html((zhMode?"无限重置以得到":"Infinity for ")+formatData3(infinityDataGain())+(zhMode?"无限数据":" Infinity Data")+"<br>");
 	
+	$("#auto_infinity_link").css("display",hasAchievement(32)?"":"none");
+	if(player.infinity.auto.gte(0.1))$("#auto_infinity_stat").html(formatData(player.infinity.auto));
+	else $("#auto_infinity_stat").html("Disabled");
 	
 	if(player.infinity.count.gte(1)){
 		$("#infinity_stat").css("display","");
@@ -112,8 +114,20 @@ function infinityUpdate(){
 		$("#infinity_stat").css("display","none");
 	}
 	
+	if(infinityDataGain().gte(player.infinity.auto)&&player.infinity.auto.gte(0.1)){
+		infinity_reset();
+	}
+	
 	updateInfinityUpgradesHTML();
 	updatepassiveLoaderHTML();
+}
+
+function setAutoInfinity(){
+	player.infinity.auto=new Decimal(document.getElementById("auto_infinity_amount").value);
+}
+
+function disableAutoInfinity(){
+	player.infinity.auto=new Decimal(0);
 }
 
 function setupInfinityUpgradesHTML(){
@@ -133,6 +147,8 @@ function setupInfinityUpgradesHTML(){
 		}
 		tempHTML=tempHTML.slice(0,-4)+"<hr>";
 	}
+	tempHTML+=(zhMode?"获得的无限数据变为1.5倍。":"1.5x Infinity Data.");
+	tempHTML+=(zhMode?"<a href=javascript:infUpgrade(0);>购买（"+formatData(getInfUpgradeCost(0))+"无限数据）</a>":"<a href=javascript:infUpgrade(0);>Buy ("+formatData(getInfUpgradeCost(0))+" Infinity Data)</a>");
 	$('#infinity_upgrades').html(tempHTML);
 }
 
@@ -153,7 +169,7 @@ function updateInfinityUpgradesHTML(){
 }
 
 function getplUpgradeCost(){
-	if(player.infinity.passiveLoader>=5)return Decimal.dInf;
+	if(player.infinity.passiveLoader>=7)return Decimal.dInf;
 	return Decimal.pow(2,player.infinity.passiveLoader*(player.infinity.passiveLoader+1)/2-3);
 }
 
@@ -170,4 +186,43 @@ function plUpgrade(){
 		player.infinity.data=player.infinity.data.sub(getplUpgradeCost());
 		player.infinity.passiveLoader++;
 	}
+}
+
+
+function getInfUpgradeLevel(a){
+	if(player.infinity.upgrades[a])return player.infinity.upgrades[a];
+	player.infinity.upgrades[a]=new Decimal(0);
+	return player.infinity.upgrades[a];
+}
+
+function getInfUpgradeCost(a,x){
+	if(x===undefined)x=getInfUpgradeLevel(a);
+	x=new Decimal(x);
+	if(a==0)return Decimal.pow(4,x.add(4));
+}
+
+function getInfUpgradeBulk(a,x){
+	if(x===undefined)x=player.infinity.data;
+	x=new Decimal(x);
+	if(a==0)return x.max(0.1).log(4).add(-3).floor().max(0);
+}
+
+
+function infUpgrade(a){
+	if(player.infinity.data.gte(getInfUpgradeCost(a))){
+		player.infinity.data=player.infinity.data.sub(getInfUpgradeCost(a));
+		player.infinity.upgrades[a]=getInfUpgradeLevel(a).add(1);setupInfinityUpgradesHTML();
+	}
+}
+
+function infMaxUpgrade(a){
+	if(player.infinity.data.gte(getInfUpgradeCost(a))){
+		var b=getInfUpgradeBulk(a);
+		player.infinity.data=player.infinity.data.sub(getInfUpgradeCost(a,b.sub(1)));
+		player.infinity.upgrades[a]=b;setupInfinityUpgradesHTML();
+	}
+}
+
+function getInfUpgradeEffect(a){
+	if(a==0)return Decimal.pow(1.5,getInfUpgradeLevel(a));
 }

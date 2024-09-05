@@ -200,19 +200,34 @@ position:absolute;
 top:5px;
 right:5px;
 width:30px;
+height:25px;
 text-align:center;
 background-color:#ff0000;
+z-index:5;
+}
+
+.window .windowtitle{
+position:absolute;
+top:5px;
+right:5px;
+width:calc(100% - 10px);
+height:25px;
+text-align:left;
+background-color:#006600;
+color:#ffffff;
 z-index:4;
 }
 
+
 .window .inner{
 position:absolute;
-top:5px;
+top:30px;
 left:5px;
 width:calc(100% - 10px);
-height:calc(100% - 10px);
+height:calc(100% - 35px);
 background-color:#cccccc;
 z-index:3;
+overflow-y:scroll;
 }
 
 .window,.subtab{

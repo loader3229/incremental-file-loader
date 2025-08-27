@@ -15,7 +15,7 @@ var infinityOneUpgrades=[
 ["Format Count boost Format Points","格式化次数加成格式化点数",5,function(){return format(player.formatCount.add(1))+"x"}],
 ["Autobuy Upgrades with format points","自动使用格式化点数购买升级",10],
 ["Gain Format Count per second equals to Infinity Count","每秒得到无限次数的格式化次数",200],
-//["Unlock Format Challenges","解锁格式化挑战",40960]
+["Unlock Format Challenges","解锁格式化挑战",40960]
 ],
 
 [

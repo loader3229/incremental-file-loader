@@ -22,6 +22,8 @@ function getInitPlayer(){
 		infinity:getInitInfinityData(),
 		lastTick:Date.now(),
 		offline:0,
+		formatChallenges:[],
+		currentFormatChallenge:0,
 	};
 }
 
@@ -69,6 +71,7 @@ function loadgame(){
 	for(var i in player1.formatUpgrades)player.formatUpgrades[i]=new Decimal(player1.formatUpgrades[i]);
 	for(var i in player1.bcUpgrades)player.bcUpgrades[i]=new Decimal(player1.bcUpgrades[i]);
 	for(var i in player1.achievements)player.achievements[i]=player1.achievements[i];
+	for(var i in player1.formatChallenges)player.formatChallenges[i]=new Decimal(player1.formatChallenges[i]);
 	player.loading=player1.loading || -1;
 	player.playTime=player1.playTime || 0;
 	player.formatTime=player1.formatTime ?? player1.playTime;
@@ -89,6 +92,7 @@ function loadgame(){
 		for(var i in player1.infinity.oneUpgrades)player.infinity.oneUpgrades[i]=player1.infinity.oneUpgrades[i];
 		for(var i in player1.infinity.upgrades)player.infinity.upgrades[i]=new Decimal(player1.infinity.upgrades[i]);
 	}
+	player.currentFormatChallenge=player1.currentFormatChallenge || 0;
 	player.offline=player1.offline || 0;
 	player.lastTick = player1.lastTick || Date.now();
 	setInterval(update,20);
